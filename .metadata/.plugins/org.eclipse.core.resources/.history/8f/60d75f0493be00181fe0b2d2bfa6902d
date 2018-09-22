@@ -8,7 +8,7 @@ public class Mushroom {
 	
 	/*
 	 * Creates new mushroom
-	 * @param line - string with 23 chars indicating various attributes of a mushrooom
+	 * @param line is a string with 23 chars indicating various attributes of a mushrooom
 	 */
 	public Mushroom(String line) {
 		attributes = new char[22];
