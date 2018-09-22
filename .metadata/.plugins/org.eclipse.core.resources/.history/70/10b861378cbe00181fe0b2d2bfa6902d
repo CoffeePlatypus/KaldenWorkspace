@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import DecisionTree.DecisionNode;
+
 public class DecisionTreeDriver {
 	private HashSet<Mushroom> trainingSet;
 	private HashSet<Mushroom> testingSet;
@@ -56,7 +58,7 @@ public class DecisionTreeDriver {
 	
 	public DecisionTree buildTree(int numTests) {
 		DecisionTree t = new DecisionTree(testingSet);
-		t.buildTree(numTests);
+		DecisionNode n = t.buildTree(numTests);
 		return t;
 	}
 

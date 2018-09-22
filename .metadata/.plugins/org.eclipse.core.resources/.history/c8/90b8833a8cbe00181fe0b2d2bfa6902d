@@ -17,7 +17,6 @@ public class DecisionTree {
 		HashSet<Integer> atts = getAttributes();
 		System.out.println(atts);
 		root = learning(subset, atts, subset);
-		System.out.println(root);
 		return root;
 	}
 	

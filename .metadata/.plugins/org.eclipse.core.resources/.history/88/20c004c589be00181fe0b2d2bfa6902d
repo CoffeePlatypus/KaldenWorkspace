@@ -13,11 +13,9 @@ public class DecisionTree {
 	}
 		
 	public DecisionNode buildTree(int n) {
-		HashSet<Mushroom> subset = testingSet;//getTestSubset(int n); //TODO uncomment
+		HashSet<Mushroom> subset = testingSet;//getTestSubset(int n);
 		HashSet<Integer> atts = getAttributes();
-		System.out.println(atts);
 		root = learning(subset, atts, subset);
-		System.out.println(root);
 		return root;
 	}
 	
@@ -25,8 +23,6 @@ public class DecisionTree {
 		if(examples.isEmpty()) return pluralityValue(pexamples);
 		else if (hasSameClassification(examples)) return getClassification(examples);
 		else if (atts.isEmpty()) return pluralityValue(pexamples);
-		return new DecisionNode(-3);
-		//TODO add recursion
 	}
 	
 	private DecisionNode pluralityValue(HashSet<Mushroom> sub) {
@@ -47,7 +43,7 @@ public class DecisionTree {
 	private boolean hasSameClassification(HashSet<Mushroom> shrooms) {
 		int pcount = 0;
 		int ecount = 0;
-		Iterator<Mushroom> musherator = shrooms.iterator();
+		Iterator<Mushroom> musherator = sub.iterator();
 		while(musherator.hasNext()) {
 			Mushroom temp = musherator.next();
 			if(temp.isPoisonous()) {
@@ -57,14 +53,6 @@ public class DecisionTree {
 			}
 		}
 		return pcount == 0 || ecount == 0;
-	}
-	
-	private DecisionNode getClassification(HashSet<Mushroom> shrooms) {
-		Iterator<Mushroom> musherator = shrooms.iterator();
-		if(musherator.hasNext()) {
-			return new DecisionNode(musherator.next().isPoisonous()? -2 : -1);
-		}
-		return new DecisionNode(-3); // error?
 	}
 	
 	private HashSet<Mushroom> getTestSubset(int n) {
@@ -85,7 +73,7 @@ public class DecisionTree {
 		return atts;
 	}
 	
-	public class DecisionNode{
+	private class DecisionNode{
 		int attribute; // -1 edible -2 poisonious
 		HashMap<Character,DecisionNode> children;
 		
@@ -99,9 +87,9 @@ public class DecisionTree {
 		}
 		
 		public String toString() {
-			String s = "Printing Decision Node\n";
+			String s = "";
 			if(isLeaf()) {
-				s += attribute == -1? "Edible" : "Poisonious";
+				s = attribute == -1? "Edible" : "Poisonious";
 			}else {
 				s += "Attribute: "+attribute +"\n";
 				s += "Num Children: "+children.size();

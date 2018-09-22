@@ -73,7 +73,6 @@ public class DecisionTreeDriver {
 			d.makeSets(br);
 			//TODO implement build and test tree in loop for increments
 			DecisionTree t = d.buildTree(5);
-			
 		} catch(Exception e) {
 			System.out.println("Not Crashing - THIS IS A HELPFUL ERROR MESSAGE :)");
 			System.out.println(e.getStackTrace());

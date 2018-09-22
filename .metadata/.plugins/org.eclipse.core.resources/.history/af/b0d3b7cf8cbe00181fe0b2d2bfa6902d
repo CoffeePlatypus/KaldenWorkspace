@@ -14,7 +14,7 @@ public class DecisionTree {
 		
 	public DecisionNode buildTree(int n) {
 		HashSet<Mushroom> subset = testingSet;//getTestSubset(int n); //TODO uncomment
-		HashSet<Integer> atts = getAttributes();
+		HashSet<Integer> atts = new HashSet<Integer>();//getAttributes();
 		System.out.println(atts);
 		root = learning(subset, atts, subset);
 		System.out.println(root);

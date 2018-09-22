@@ -13,11 +13,9 @@ public class DecisionTree {
 	}
 		
 	public DecisionNode buildTree(int n) {
-		HashSet<Mushroom> subset = testingSet;//getTestSubset(int n); //TODO uncomment
+		HashSet<Mushroom> subset = testingSet;//getTestSubset(int n);
 		HashSet<Integer> atts = getAttributes();
-		System.out.println(atts);
 		root = learning(subset, atts, subset);
-		System.out.println(root);
 		return root;
 	}
 	
@@ -85,7 +83,7 @@ public class DecisionTree {
 		return atts;
 	}
 	
-	public class DecisionNode{
+	private class DecisionNode{
 		int attribute; // -1 edible -2 poisonious
 		HashMap<Character,DecisionNode> children;
 		

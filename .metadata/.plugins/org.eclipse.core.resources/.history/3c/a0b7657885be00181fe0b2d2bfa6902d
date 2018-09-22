@@ -6,16 +6,15 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class DecisionTreeDriver {
-	private HashSet<Mushroom> trainingSet;
-	private HashSet<Mushroom> testingSet;
+	private Set<Mushroom> trainingSet;
+	private Set<Mushroom> testingSet;
 	private int trainingSize;
 	private int incrementSize;
-	private boolean debug = true;
 	
 	public DecisionTreeDriver() {
 		trainingSet = new HashSet<Mushroom>();
 		testingSet = new HashSet<Mushroom>();
-		trainingSize = 5; //probs change later
+		trainingSize = 0;
 		incrementSize = 0;
 	}
 	
@@ -48,34 +47,21 @@ public class DecisionTreeDriver {
 			}
 			line = br.readLine();
 		}
-		if(debug) {
-			System.out.println("Training Set Size: "+trainingSet.size());
-			System.out.println("Testing  Set Size: "+testingSet.size());
-		}
-	}
-	
-	public DecisionTree buildTree(int numTests) {
-		DecisionTree t = new DecisionTree(testingSet);
-		t.buildTree(numTests);
-		return t;
+		System.out.println(trainingSet.size());
+		System.out.println(testingSet.size());
 	}
 
 	public static void main(String[] args) {
 		DecisionTreeDriver d = new DecisionTreeDriver();
 		Scanner rin = new Scanner(System.in);
-//		if(d.readParams(rin) < 0) {
-//			return;
-//		}
+		if(d.readParams(rin) < 0) {
+			return;
+		}
 		
 		try {
-//			BufferedReader br = new BufferedReader(new FileReader("mushroom_data.txt"));
-			BufferedReader br = new BufferedReader(new FileReader("miniShroomData.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("mushroom_data.txt"));
 			d.makeSets(br);
-			//TODO implement build and test tree in loop for increments
-			DecisionTree t = d.buildTree(5);
-			
-		} catch(Exception e) {
-			System.out.println("Not Crashing - THIS IS A HELPFUL ERROR MESSAGE :)");
+		} catch(IOException e) {
 			System.out.println(e.getStackTrace());
 		}
 		
