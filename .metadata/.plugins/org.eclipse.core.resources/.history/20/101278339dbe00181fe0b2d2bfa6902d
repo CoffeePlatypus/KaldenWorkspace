@@ -9,28 +9,6 @@ import java.util.Set;
 public class DecisionTree {
 	private HashSet<Mushroom> testingSet;
 	private DecisionNode root;
-	private char[][] attrOpts = {{'b','c','f','k','s'},								// cap shape
-								 {'f','g','y','s'},									// cap surface
-								 {'n','b','c','g','r','p','u','e','w','y' },		// cap color
-								 {'t','f'},											// bruises
-								 {'a','l','c','y','f','m','n','p','s'},				// odor
-								 {'a','d','f','n'},									// gill attachment
-								 {'c','w','d'},										// gill spacing
-								 {'b','n'},											// gill size
-								 {'k','n','b','h','g','r','o','p','u','e','w','y'}, // gill color
-								 {'e','t'},											// stalk shape
-								 {'b','c','u','e','z','r'},							// stalk root
-								 {'f','y','k','s'},									// stalk surface above ring
-								 {'f','y','k','s'},									// stalk surface below ring
-								 {'n','b','c','g','o','p','e','w','y'},				// stalk cover above ring
-								 {'n','b','c','g','o','p','e','w','y'},				// stalk cover below ring
-								 {'p','u'},											// veil type
-								 {'n','o','w','y'},									// veil color
-								 {'n','o','t'},										// ring number
-								 {'c','e','f','l','n','p','s','z'},					// ring type
-								 {'k','n','b','h','r','o','u','w','y'},				// spore print color
-								 {'a','c','n','s','v','y'},							// population
-								 {'g','l','m','p','u','w','d'}};					// habitat
 	
 	/* Constructs a new DecisionTree
 	 * @param ts - set of mushrooms a subset of which will be used for construting the decision tree
@@ -62,32 +40,8 @@ public class DecisionTree {
 		if(examples.isEmpty()) return pluralityValue(pexamples);
 		else if (hasSameClassification(examples)) return getClassification(examples);
 		else if (atts.isEmpty()) return pluralityValue(pexamples);
-		
-		int attribute = findImportant(atts, examples);
-		atts.remove(attribute);
-		DecisionNode nodey = new DecisionNode(attribute);
-		for(int i = 0; i<attrOpts[attribute].length; i++) {
-			char attrValue = attrOpts[attribute][i];
-			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), atts, examples));
-		}
-		return nodey;
+		return new DecisionNode(-3);
 		//TODO add recursion
-	}
-	
-	private HashSet<Mushroom> filterShrooms(HashSet<Mushroom> ex, int attr, char attrValue) {
-		HashSet<Mushroom> shrooms = new HashSet<Mushroom>();
-		Iterator<Mushroom> musherator = ex.iterator();
-		while(musherator.hasNext()) {
-			Mushroom temp = musherator.next();
-			if(temp.getAttribute(attr) == attrValue) {
-				shrooms.add(temp);
-			}
-		}
-		return shrooms;
-	}
-	
-	private int findImportant(HashSet<Integer> attrs, HashSet<Mushroom> examples) {
-		return 0;
 	}
 	
 	/* determines the pluralityValue of a set of Mushrooms
@@ -177,10 +131,6 @@ public class DecisionTree {
 		private DecisionNode(int a) {
 			attribute = a;
 			children = new HashMap<Character,DecisionNode>();
-		}
-		
-		public void addChild(char attr, DecisionNode n) {
-			children.put(attr, n);
 		}
 		
 		public boolean isLeaf() {
