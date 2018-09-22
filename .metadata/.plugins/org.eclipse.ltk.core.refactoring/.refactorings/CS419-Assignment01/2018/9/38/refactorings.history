@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;CS419-Assignment01/miniShroomData&apos; to &apos;miniShroomData.txt&apos;" description="Rename resource &apos;miniShroomData&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="miniShroomData" name="miniShroomData.txt" stamp="1537473926632" updateReferences="true"/>
+</session>
