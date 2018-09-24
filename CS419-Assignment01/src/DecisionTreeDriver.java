@@ -14,7 +14,7 @@ public class DecisionTreeDriver {
 	public DecisionTreeDriver() {
 		trainingSet = new HashSet<Mushroom>();
 		testingSet = new HashSet<Mushroom>();
-		trainingSize = 5; //probs change later
+		trainingSize = 10; //probs change later
 		incrementSize = 0;
 	}
 	
@@ -82,7 +82,7 @@ public class DecisionTreeDriver {
 			
 		} catch(Exception e) {
 			System.out.println("Not Crashing - THIS IS A HELPFUL ERROR MESSAGE :P");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 		
 		// make tree

@@ -9,7 +9,7 @@ import java.util.Set;
 public class DecisionTree {
 	private HashSet<Mushroom> testingSet;
 	private DecisionNode root;
-	private char[][] attrOpts = {{'b','c','f','k','s'},								// cap shape
+	private final char[][] OPTS={{'b','c','x','f','k','s'},								// cap shape
 								 {'f','g','y','s'},									// cap surface
 								 {'n','b','c','g','r','p','u','e','w','y' },		// cap color
 								 {'t','f'},											// bruises
@@ -66,10 +66,11 @@ public class DecisionTree {
 		int attribute = findImportant(atts, examples);
 		atts.remove(attribute);
 		DecisionNode nodey = new DecisionNode(attribute);
-		for(int i = 0; i<attrOpts[attribute].length; i++) {
-			char attrValue = attrOpts[attribute][i];
-			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), atts, examples));
-		}
+		// comment out when you figure out attribute picking
+//		for(int i = 0; i<OPTS[attribute].length; i++) {
+//			char attrValue = OPTS[attribute][i];
+//			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), atts, examples));
+//		}
 		return nodey;
 		//TODO add recursion
 	}
@@ -87,8 +88,84 @@ public class DecisionTree {
 	}
 	
 	private int findImportant(HashSet<Integer> attrs, HashSet<Mushroom> examples) {
+		//TODO find a way to find important attribute
+		// Gain(a) = 1 - entropy?
+		//build array of entropy of attributes
+		double [] entropies = new double[22];
+		double [] remainers = new double[22];
+		double [] gain = new double[22];
+		Iterator<Integer> atterator = attrs.iterator();
+		while(atterator.hasNext()) {
+			int attr = atterator.next();
+			System.out.println("Attr: "+attr);
+			int [][] attrDis = countAttrDistribution(attr, examples);
+//			printArray(attrDis);
+			double entropy = 0;
+			double rem = 0;
+			for(int i = 0; i<attrDis.length; i++) {
+				System.out.print("\t["+attrDis[i][1]+" | "+ (attrDis[i][0] - attrDis[i][1])+"] / "+attrDis[i][0] +" = ");
+				if(attrDis[i][0] != 0) {
+					double p = attrDis[i][1] / (double)attrDis[i][0];
+					double pent = (p == 0? 0 : p * Math.log10(p));
+					double nent = ( 1-p == 0 ? 0: (1-p) * Math.log10(1-p));
+					
+					
+					System.out.println(pent+nent);
+					entropy -= pent + nent;
+					
+					System.out.println(attrDis[i][0]/(double)examples.size());
+					rem += (attrDis[i][0] / (double)examples.size()) * pent;
+				}else {
+					System.out.println(0);
+				}
+				
+//				System.out.println(Math.log(p));
+				
+			}
+			System.out.println("Attr "+attr+" has entropy "+entropy);
+			System.out.println("Attr "+attr+" has rem "+rem);
+			entropies[attr] = entropy;
+			remainers[attr] = rem;
+			gain[attr] = 1 - rem;
+			
+			
+		}
+		printArray(entropies);
+		printArray(remainers);
+		printArray(gain);
 		return 0;
 	}
+	
+	private int[][] countAttrDistribution(int attr, HashSet<Mushroom> ex) {
+//		System.out.println("Couting distribution of attribue");
+		Iterator<Mushroom> musherator = ex.iterator();
+		HashMap<Character, Integer> charIntMap = new HashMap<Character, Integer>();
+		for(int i = 0; i<OPTS[attr].length; i++) {
+			charIntMap.put(OPTS[attr][i], i);
+		}
+//		System.out.println("Mapped CHars");
+		int [][] attrDis = new int[OPTS[attr].length][2];
+		while(musherator.hasNext()) {
+			
+			Mushroom shroom = musherator.next();
+//			System.out.println("shroom:" + shroom);
+			int index = charIntMap.get(shroom.getAttribute(attr));
+//			System.out.println("index of attr "+index);
+			attrDis[index][0]++;
+			if(shroom.isPoisonous()) attrDis[index][1]++;
+		}
+//		System.out.println("counted distribution");
+		return attrDis;
+	}
+	
+	public void printArray(double [] arr) {
+		for(int i = 0; i<arr.length; i++ ) {
+			if(i % 5 == 0) System.out.println();
+			System.out.print(arr[i]+ ((arr[i] == 0)? "\t\t\t": "\t"));
+		}
+		System.out.println();
+	}
+
 	
 	/* determines the pluralityValue of a set of Mushrooms
 	 * @param shrooms - set of mushrooms
