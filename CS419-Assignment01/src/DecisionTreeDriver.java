@@ -14,7 +14,7 @@ public class DecisionTreeDriver {
 	public DecisionTreeDriver() {
 		trainingSet = new HashSet<Mushroom>();
 		testingSet = new HashSet<Mushroom>();
-		trainingSize = 10; //probs change later
+		trainingSize = 250; //probs change later
 		incrementSize = 0;
 	}
 	
@@ -74,8 +74,8 @@ public class DecisionTreeDriver {
 //		}
 		
 		try {
-//			BufferedReader br = new BufferedReader(new FileReader("mushroom_data.txt"));
-			BufferedReader br = new BufferedReader(new FileReader("miniShroomData.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("mushroom_data.txt"));
+//			BufferedReader br = new BufferedReader(new FileReader("miniShroomData.txt"));
 			d.makeSets(br);
 			//TODO implement build and test tree in loop for increments
 			DecisionTree t = d.buildTree(5);

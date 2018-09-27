@@ -110,23 +110,21 @@ public class DecisionTree {
 					double nent = ( 1-p == 0 ? 0: (1-p) * Math.log10(1-p));
 					
 					
-					System.out.println(pent+nent);
+					System.out.print(pent+nent);
 					entropy -= pent + nent;
 					
-					System.out.println(attrDis[i][0]/(double)examples.size());
+					System.out.print("\t"+attrDis[i][0]/(double)examples.size()+"\n");
 					rem += (attrDis[i][0] / (double)examples.size()) * pent;
 				}else {
 					System.out.println(0);
 				}
-				
-//				System.out.println(Math.log(p));
 				
 			}
 			System.out.println("Attr "+attr+" has entropy "+entropy);
 			System.out.println("Attr "+attr+" has rem "+rem);
 			entropies[attr] = entropy;
 			remainers[attr] = rem;
-			gain[attr] = 1 - rem;
+			gain[attr] = 1 + rem;
 			
 			
 		}
