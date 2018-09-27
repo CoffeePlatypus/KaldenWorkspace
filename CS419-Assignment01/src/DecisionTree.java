@@ -7,8 +7,9 @@ import java.util.Set;
  * @author Julia Froegel
  */
 public class DecisionTree {
-	private HashSet<Mushroom> testingSet;
+	private HashSet<Mushroom> trainingSet;
 	private DecisionNode root;
+	private boolean debug;
 	private final char[][] OPTS={{'b','c','x','f','k','s'},								// cap shape
 								 {'f','g','y','s'},									// cap surface
 								 {'n','b','c','g','r','p','u','e','w','y' },		// cap color
@@ -36,8 +37,9 @@ public class DecisionTree {
 	 * @param ts - set of mushrooms a subset of which will be used for construting the decision tree
 	 */
 	public DecisionTree(HashSet<Mushroom> ts) {
-		testingSet = ts;
+		trainingSet = ts;
 		root = null;
+		debug = false;
 	}
 	
 	/* Builds tree structure and root for the DecisionTree
@@ -45,12 +47,20 @@ public class DecisionTree {
 	 * @return root DecisionNode of tree
 	 */
 	public DecisionNode buildTree(int n) {
-		HashSet<Mushroom> subset = testingSet;//getTestSubset(int n); //TODO uncomment
+		HashSet<Mushroom> subset = getTestSubset(n); //TODO uncomment
 		HashSet<Integer> atts = getAttributes();
 		System.out.println(atts);
 		root = learning(subset, atts, subset);
 		System.out.println(root);
 		return root;
+	}
+	
+	public boolean predictPoisonious(Mushroom mushy) {
+		DecisionNode temp = root;
+		while(!temp.isLeaf()) {
+			temp = temp.getChild(mushy.getAttribute(temp.getAttrNum()));
+		}
+		return temp.isPoisonious();
 	}
 	
 	/* Follows recursive decision tree learning algorithm for building tree
@@ -59,89 +69,111 @@ public class DecisionTree {
 	 * @param pexamples - set of mushrooms from the previous call?
 	 */
 	private DecisionNode learning(HashSet<Mushroom> examples, HashSet<Integer> atts, HashSet<Mushroom> pexamples ) {
+		if(examples.isEmpty()) System.out.println("examples empty");
 		if(examples.isEmpty()) return pluralityValue(pexamples);
 		else if (hasSameClassification(examples)) return getClassification(examples);
 		else if (atts.isEmpty()) return pluralityValue(pexamples);
-		
 		int attribute = findImportant(atts, examples);
 		atts.remove(attribute);
 		DecisionNode nodey = new DecisionNode(attribute);
-		// comment out when you figure out attribute picking
-//		for(int i = 0; i<OPTS[attribute].length; i++) {
-//			char attrValue = OPTS[attribute][i];
-//			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), atts, examples));
-//		}
+		for(int i = 0; i<OPTS[attribute].length; i++) {
+			char attrValue = OPTS[attribute][i];
+			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), atts, examples));
+//			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), new HashSet<Integer>(), new HashSet<Mushroom>()));
+		}
+		System.out.println(printTree(nodey));
 		return nodey;
-		//TODO add recursion
 	}
 	
 	private HashSet<Mushroom> filterShrooms(HashSet<Mushroom> ex, int attr, char attrValue) {
 		HashSet<Mushroom> shrooms = new HashSet<Mushroom>();
 		Iterator<Mushroom> musherator = ex.iterator();
+		System.out.println("finding " + attr+" = "+attrValue);
 		while(musherator.hasNext()) {
 			Mushroom temp = musherator.next();
 			if(temp.getAttribute(attr) == attrValue) {
 				shrooms.add(temp);
+				System.out.println("\t"+temp);
 			}
 		}
 		return shrooms;
 	}
 	
+	/* Hopefully finds the most important attribute
+	 * @param attrs
+	 */
 	private int findImportant(HashSet<Integer> attrs, HashSet<Mushroom> examples) {
-		//TODO find a way to find important attribute
-		// Gain(a) = 1 - entropy?
-		//build array of entropy of attributes
 		double [] entropies = new double[22];
-		double [] remainers = new double[22];
-		double [] gain = new double[22];
+		double [] gains = new double[22];
 		Iterator<Integer> atterator = attrs.iterator();
 		while(atterator.hasNext()) {
 			int attr = atterator.next();
-			System.out.println("Attr: "+attr);
-			int [][] attrDis = countAttrDistribution(attr, examples);
-//			printArray(attrDis);
+			if(debug) System.out.println("Attr: "+attr);
+			//// Count which mushrooms have which attributes
+			int [][] attrDis = countAttrDistribution(attr, examples); 
+			//// attrDis[x][0] = num with attrType; attrDis[x][1] =num with attrType that are poisonous
 			double entropy = 0;
 			double rem = 0;
 			for(int i = 0; i<attrDis.length; i++) {
-				System.out.print("\t["+attrDis[i][1]+" | "+ (attrDis[i][0] - attrDis[i][1])+"] / "+attrDis[i][0] +" = ");
+				if(debug) System.out.print("\t["+attrDis[i][1]+" | "+ (attrDis[i][0] - attrDis[i][1])+"] / "+attrDis[i][0] +" = ");
 				if(attrDis[i][0] != 0) {
 					double p = attrDis[i][1] / (double)attrDis[i][0];
 					double pent = (p == 0? 0 : p * Math.log10(p));
 					double nent = ( 1-p == 0 ? 0: (1-p) * Math.log10(1-p));
-					
-					
-					System.out.print(pent+nent);
 					entropy -= pent + nent;
-					
-					System.out.print("\t"+attrDis[i][0]/(double)examples.size()+"\n");
+					if(debug) {
+						System.out.print(pent+nent);
+						System.out.print("\t"+attrDis[i][0]/(double)examples.size()+"\n");
+					}
 					rem += (attrDis[i][0] / (double)examples.size()) * pent;
 				}else {
-					System.out.println(0);
+//					System.out.println(0);
 				}
 				
 			}
-			System.out.println("Attr "+attr+" has entropy "+entropy);
-			System.out.println("Attr "+attr+" has rem "+rem);
+			if(debug) {
+				System.out.println("Attr "+attr+" has entropy "+entropy);
+				System.out.println("Attr "+attr+" has rem "+rem);
+			}
+			// store entropy and gain
 			entropies[attr] = entropy;
-			remainers[attr] = rem;
-			gain[attr] = 1 + rem;
-			
-			
+			gains[attr] = 1 + rem;
 		}
-		printArray(entropies);
-		printArray(remainers);
-		printArray(gain);
-		return 0;
+		if(debug) {
+			printArray(entropies);
+			printArray(gains);
+		}		
+		// find largest gain
+		atterator = attrs.iterator();
+		if(atterator.hasNext()) {
+			int attr = atterator.next();
+			double gain = gains[attr];
+			while(atterator.hasNext()) {
+				int temp = atterator.next();
+				if(gains[temp] > gain) {
+					gain = gains[temp];
+					attr = temp;
+				}
+			}
+			System.out.println("most important attr: "+attr);
+			return attr;
+		}else {
+			System.out.println("No attrs error?");
+			return -1; //error?
+		}
 	}
 	
+	/* Counts the attributeType distribution for an Attribute
+	 * @param attr - int representing an Attribute
+	 * @param ex -set of mushrooms
+	 * @return - int[][] where [i][0] = num of mushrooms with attribute type && [i][1] = num of [i][0] that are poisonous  
+	 */
 	private int[][] countAttrDistribution(int attr, HashSet<Mushroom> ex) {
-//		System.out.println("Couting distribution of attribue");
 		Iterator<Mushroom> musherator = ex.iterator();
 		HashMap<Character, Integer> charIntMap = new HashMap<Character, Integer>();
 		for(int i = 0; i<OPTS[attr].length; i++) {
 			charIntMap.put(OPTS[attr][i], i);
 		}
-//		System.out.println("Mapped CHars");
 		int [][] attrDis = new int[OPTS[attr].length][2];
 		while(musherator.hasNext()) {
 			
@@ -200,6 +232,7 @@ public class DecisionTree {
 				ecount++;
 			}
 		}
+		System.out.println("Pcount: "+pcount+"\nEcount: "+ecount);
 		return pcount == 0 || ecount == 0;
 	}
 	
@@ -215,12 +248,12 @@ public class DecisionTree {
 		return new DecisionNode(-3); // error?
 	}
 	
-	/* make a testSet that is a subset of TestingSet
+	/* make a testSet that is a subset of trainingSet
 	 * @param n - size of testing subset to make
 	 * @return set of mushrooms that is a subset of Testing Set
 	 */
 	private HashSet<Mushroom> getTestSubset(int n) {
-		Iterator<Mushroom> seterator = testingSet.iterator();
+		Iterator<Mushroom> seterator = trainingSet.iterator();
 		HashSet<Mushroom> sub = new HashSet<Mushroom>();
 		int count = 0;
 		while(seterator.hasNext() && count++ < n) {
@@ -237,6 +270,23 @@ public class DecisionTree {
 			atts.add(i);
 		}
 		return atts;
+	}
+	
+	public String toString() {
+		String s = "";
+		printTree(root);
+		return s;
+	}
+	
+	private String printTree(DecisionNode n) {
+		if(n == null) return "";
+		String s = n.toString();
+		if(!n.isLeaf()) {
+			for(int i = 0; i<n.numChildren(); i++) {
+				s+= "\n\t- "+OPTS[n.getAttrNum()][i]+" - "+printTree(n.getChild(OPTS[n.getAttrNum()][i]));
+			}
+		}
+		return s;
 	}
 	
 	/* node in decision tree
@@ -262,12 +312,28 @@ public class DecisionTree {
 			return attribute < 0;
 		}
 		
+		public boolean isPoisonious() {
+			return attribute == -2;
+		}
+		
+		public int numChildren() {
+			return children.size();
+		}
+		
+		public int getAttrNum() {
+			return attribute;
+		}
+		
+		public DecisionNode getChild(char attribute) {
+			return children.get(attribute);
+		}
+		
 		public String toString() {
-			String s = "Printing Decision Node\n";
+			String s = "";//"Printing Decision Node\n";
 			if(isLeaf()) {
 				s += attribute == -1? "Edible" : "Poisonious";
 			}else {
-				s += "Attribute: "+attribute +"\n";
+				s += "Attr: "+attribute +"  --  ";
 				s += "Num Children: "+children.size();
 			}
 			return s;

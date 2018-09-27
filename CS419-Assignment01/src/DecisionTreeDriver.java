@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class DecisionTreeDriver {
@@ -61,9 +62,30 @@ public class DecisionTreeDriver {
 	 * @param numTest - number of tests to include in subset
 	 */
 	public DecisionTree buildTree(int numTests) {
-		DecisionTree t = new DecisionTree(testingSet);
+		DecisionTree t = new DecisionTree(trainingSet);
 		t.buildTree(numTests);
 		return t;
+	}
+	
+	public void test(DecisionTree t) {
+		int correctCount = 0;
+		int falsePoison = 0;
+		int falseEdible = 0;
+		Iterator<Mushroom> tester = testingSet.iterator();
+		while(tester.hasNext()) {
+			Mushroom mushi = tester.next();
+			boolean prediction = t.predictPoisonious(mushi);
+			if(prediction == mushi.isPoisonous()) {
+				correctCount++;
+			}else if(prediction) {
+				falsePoison++;
+			}else {
+				falseEdible++;
+			}
+		}
+		System.out.println("Correct Ratio - [ "+correctCount+" / "+testingSet.size()+" ] = "+ (correctCount/(double)testingSet.size())*100 +" % accuracy");
+		System.out.println("\tPredicted poisonious when edible - "+falsePoison);
+		System.out.println("\tPredicted edible when poisionious - "+falseEdible);
 	}
 
 	public static void main(String[] args) {
@@ -78,7 +100,8 @@ public class DecisionTreeDriver {
 //			BufferedReader br = new BufferedReader(new FileReader("miniShroomData.txt"));
 			d.makeSets(br);
 			//TODO implement build and test tree in loop for increments
-			DecisionTree t = d.buildTree(5);
+			DecisionTree t = d.buildTree(250);
+			d.test(t);
 			
 		} catch(Exception e) {
 			System.out.println("Not Crashing - THIS IS A HELPFUL ERROR MESSAGE :P");
