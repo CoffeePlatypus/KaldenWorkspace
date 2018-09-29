@@ -49,9 +49,7 @@ public class DecisionTree {
 	public DecisionNode buildTree(int n) {
 		HashSet<Mushroom> subset = getTestSubset(n); //TODO uncomment
 		HashSet<Integer> atts = getAttributes();
-		System.out.println(atts);
 		root = learning(subset, atts, subset);
-		System.out.println(root);
 		return root;
 	}
 	
@@ -69,7 +67,6 @@ public class DecisionTree {
 	 * @param pexamples - set of mushrooms from the previous call?
 	 */
 	private DecisionNode learning(HashSet<Mushroom> examples, HashSet<Integer> atts, HashSet<Mushroom> pexamples ) {
-		if(examples.isEmpty()) System.out.println("examples empty");
 		if(examples.isEmpty()) return pluralityValue(pexamples);
 		else if (hasSameClassification(examples)) return getClassification(examples);
 		else if (atts.isEmpty()) return pluralityValue(pexamples);
@@ -81,19 +78,18 @@ public class DecisionTree {
 			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), atts, examples));
 //			nodey.addChild(attrValue, learning(filterShrooms(examples,attribute,attrValue), new HashSet<Integer>(), new HashSet<Mushroom>()));
 		}
-		System.out.println(printTree(nodey));
 		return nodey;
 	}
 	
 	private HashSet<Mushroom> filterShrooms(HashSet<Mushroom> ex, int attr, char attrValue) {
 		HashSet<Mushroom> shrooms = new HashSet<Mushroom>();
 		Iterator<Mushroom> musherator = ex.iterator();
-		System.out.println("finding " + attr+" = "+attrValue);
+//		System.out.println("finding " + attr+" = "+attrValue);
 		while(musherator.hasNext()) {
 			Mushroom temp = musherator.next();
 			if(temp.getAttribute(attr) == attrValue) {
 				shrooms.add(temp);
-				System.out.println("\t"+temp);
+//				System.out.println("\t"+temp);
 			}
 		}
 		return shrooms;
@@ -108,7 +104,7 @@ public class DecisionTree {
 		Iterator<Integer> atterator = attrs.iterator();
 		while(atterator.hasNext()) {
 			int attr = atterator.next();
-			if(debug) System.out.println("Attr: "+attr);
+//			if(debug) System.out.println("Attr: "+attr);
 			//// Count which mushrooms have which attributes
 			int [][] attrDis = countAttrDistribution(attr, examples); 
 			//// attrDis[x][0] = num with attrType; attrDis[x][1] =num with attrType that are poisonous
@@ -232,7 +228,7 @@ public class DecisionTree {
 				ecount++;
 			}
 		}
-		System.out.println("Pcount: "+pcount+"\nEcount: "+ecount);
+//		System.out.println("Pcount: "+pcount+"\nEcount: "+ecount);
 		return pcount == 0 || ecount == 0;
 	}
 	
