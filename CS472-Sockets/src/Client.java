@@ -8,7 +8,7 @@ public class Client {
 		BufferedReader in = null;
 		
 		String hostName = "127.0.0.1";//args[0]; 
-		int portNumber = 54321;
+		int portNumber = 80;
 		try {
 			sock = new Socket(hostName, portNumber);
 			out = new PrintWriter(sock.getOutputStream(), true);
@@ -17,7 +17,11 @@ public class Client {
 		
 			String userInput = "Want all the data";
 			out.println(userInput);
-			System.out.println("K thx bye: " + in.readLine());
+			String line = in.readLine();
+			while(line != null) {
+				System.out.println(line);
+				line = in.readLine();
+			}
 		} catch (UnknownHostException e) {System.err.println("Unknown host " + hostName);
 			System.exit(1);
 		} catch (IOException e) {System.err.println("I/O exception to " + hostName);
