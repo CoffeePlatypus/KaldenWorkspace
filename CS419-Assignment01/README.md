@@ -13,25 +13,26 @@ Java 10
 ### Usage ###
 Run from command line in following format 
  
-#####`java DecisionTreeDriver [-a] [-d] [-f=<fileName>] [-v]`#####
-* `-a` --------------------------------------------------------- 
+`java DecisionTreeDriver [-a] [-d] [-f=<fileName>] [-v]`
+* `-a` 
      - [optional]
      - include to run in failure analysis mode
      - prints counts for incorrect predictions
 
-* `-d` ---------------------------------------------------------
-      - [optional]
-      - include to run in debug mode
-      - this generates a lot of output, slows performance, and is not recommended 
+* `-d` 
+     - [optional]
+     - include to run in debug mode
+     - this generates a lot of output, slows performance, and is not recommended 
 
-* `-v` --------------------------------------------------------- 
-      - [optional] 
-      - include to run in verbose mode and print final ultimate tree structure  
+* `-v`  
+     - [optional] 
+     - include to run in verbose mode and print final ultimate tree structure  
 
-* `-f=<filePath>` -------------------------------------------
-      - [optional] 
-      - include to run with a specific input file of mushroom data
-         - `<filePath>` 
-                        - required if `-f` is used - specifies path to mushroom path test file
-      - if `-f` is not used then the program read from `mushroom_data.txt` in the same directory
+* `-f=<filePath>` 
+     - [optional] 
+     - include to run with a specific input file of mushroom data
+     - `<filePath>` 
+       - required if `-f=` is used 
+       - specifies path to mushroom path test file
+     - if `-f=` is not used then the program read from `mushroom_data.txt` from the same directory that it is in
 
