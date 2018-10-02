@@ -1,0 +1,211 @@
+Enter training set size in range 250 to 1000: 500
+
+Enter increment size 10, 25, or 50: 10
+
+Training Set Size: 500
+Testing  Set Size: 5144
+
+Building tree with training set size: 10
+Correct Ratio - [ 3045 / 5144 ] = 59.1951 % accuracy
+
+Building tree with training set size: 20
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 30
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 40
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 50
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 60
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 70
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 80
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 90
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 100
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 110
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 120
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 130
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 140
+Correct Ratio - [ 3247 / 5144 ] = 63.1220 % accuracy
+
+Building tree with training set size: 150
+Correct Ratio - [ 4829 / 5144 ] = 93.8763 % accuracy
+
+Building tree with training set size: 160
+Correct Ratio - [ 4829 / 5144 ] = 93.8763 % accuracy
+
+Building tree with training set size: 170
+Correct Ratio - [ 4829 / 5144 ] = 93.8763 % accuracy
+
+Building tree with training set size: 180
+Correct Ratio - [ 4829 / 5144 ] = 93.8763 % accuracy
+
+Building tree with training set size: 190
+Correct Ratio - [ 4829 / 5144 ] = 93.8763 % accuracy
+
+Building tree with training set size: 200
+Correct Ratio - [ 4829 / 5144 ] = 93.8763 % accuracy
+
+Building tree with training set size: 210
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 220
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 230
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 240
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 250
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 260
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 270
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 280
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 290
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 300
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 310
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 320
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 330
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 340
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 350
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 360
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 370
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 380
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 390
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 400
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 410
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 420
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 430
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 440
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 450
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 460
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 470
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 480
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 490
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+Building tree with training set size: 500
+Correct Ratio - [ 5020 / 5144 ] = 97.5894 % accuracy
+
+-----------
+Statistics
+-----------
+
+Training Set Size:   10		Success: 59.1951%
+Training Set Size:   20		Success: 63.1220%
+Training Set Size:   30		Success: 63.1220%
+Training Set Size:   40		Success: 63.1220%
+Training Set Size:   50		Success: 63.1220%
+Training Set Size:   60		Success: 63.1220%
+Training Set Size:   70		Success: 63.1220%
+Training Set Size:   80		Success: 63.1220%
+Training Set Size:   90		Success: 63.1220%
+Training Set Size:  100		Success: 63.1220%
+Training Set Size:  110		Success: 63.1220%
+Training Set Size:  120		Success: 63.1220%
+Training Set Size:  130		Success: 63.1220%
+Training Set Size:  140		Success: 63.1220%
+Training Set Size:  150		Success: 93.8763%
+Training Set Size:  160		Success: 93.8763%
+Training Set Size:  170		Success: 93.8763%
+Training Set Size:  180		Success: 93.8763%
+Training Set Size:  190		Success: 93.8763%
+Training Set Size:  200		Success: 93.8763%
+Training Set Size:  210		Success: 97.5894%
+Training Set Size:  220		Success: 97.5894%
+Training Set Size:  230		Success: 97.5894%
+Training Set Size:  240		Success: 97.5894%
+Training Set Size:  250		Success: 97.5894%
+Training Set Size:  260		Success: 97.5894%
+Training Set Size:  270		Success: 97.5894%
+Training Set Size:  280		Success: 97.5894%
+Training Set Size:  290		Success: 97.5894%
+Training Set Size:  300		Success: 97.5894%
+Training Set Size:  310		Success: 97.5894%
+Training Set Size:  320		Success: 97.5894%
+Training Set Size:  330		Success: 97.5894%
+Training Set Size:  340		Success: 97.5894%
+Training Set Size:  350		Success: 97.5894%
+Training Set Size:  360		Success: 97.5894%
+Training Set Size:  370		Success: 97.5894%
+Training Set Size:  380		Success: 97.5894%
+Training Set Size:  390		Success: 97.5894%
+Training Set Size:  400		Success: 97.5894%
+Training Set Size:  410		Success: 97.5894%
+Training Set Size:  420		Success: 97.5894%
+Training Set Size:  430		Success: 97.5894%
+Training Set Size:  440		Success: 97.5894%
+Training Set Size:  450		Success: 97.5894%
+Training Set Size:  460		Success: 97.5894%
+Training Set Size:  470		Success: 97.5894%
+Training Set Size:  480		Success: 97.5894%
+Training Set Size:  490		Success: 97.5894%
+Training Set Size:  500		Success: 97.5894%

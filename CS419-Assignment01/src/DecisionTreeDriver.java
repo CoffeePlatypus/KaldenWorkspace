@@ -33,34 +33,29 @@ public class DecisionTreeDriver {
 	 * @param rin - scanner to input from user
 	 * @return int for error checking
 	 */
-	public void readParams(Scanner rin) {
-		int failCount = 0;
+	public boolean readParams(Scanner rin) {
 		System.out.print("Enter training set size in range 250 to 1000: ");
 		trainingSize = rin.hasNextInt() ? rin.nextInt() : 0;
 		System.out.println();
-		while((trainingSize < 250 || trainingSize > 1000) && failCount++< 20) {
-			System.out.println(trainingSize+" - Invalid training set size - try again");
-			if(rin.hasNextInt()) {
-				trainingSize = rin.nextInt();
-			}else {
+		if(trainingSize < 250 || trainingSize > 1000) {
+			System.out.println(trainingSize+" - Invalid training set size");
+			if(!rin.hasNextInt() && rin.hasNext()){
 				System.out.println(rin.next()+" is not an even an int");
 			}
+			return false;
 		}
 		
 		System.out.print("Enter increment size 10, 25, or 50: ");
 		incrementSize = rin.hasNextInt() ? rin.nextInt() : 0;
 		System.out.println();
-		while(incrementSize != 10 && incrementSize != 25 && incrementSize != 50 && failCount++< 20) {
-			System.out.println(incrementSize+"- Invalid increment size - try again");
-			if(rin.hasNextInt()) {
-				incrementSize = rin.nextInt();
-			}else {
+		if(incrementSize != 10 && incrementSize != 25 && incrementSize != 50) {
+			System.out.println(incrementSize+"- Invalid increment size");
+			if(!rin.hasNextInt() && rin.hasNext()){
 				System.out.println(rin.next()+" is not an even an int");
 			}
+			return false;
 		}
-		if(failCount >= 20) {
-			System.out.println("You failed");
-		}
+		return true;
 	}
 	
 	/* Divide mushrooms into TrainingSet and TestingSet
@@ -132,7 +127,7 @@ public class DecisionTreeDriver {
 	/* Tests DecisionTree on testing set
 	 * @param DecisionTree to test
 	 */
-	public void test(DecisionTree t) {
+	public String test(DecisionTree t) {
 		int correctCount = 0;
 		int falsePoison = 0;
 		int falseEdible = 0;
@@ -149,23 +144,34 @@ public class DecisionTreeDriver {
 			}
 		}
 		String acuracy = ((correctCount/(double)testingSet.size())*100)+"";
-		System.out.println("Correct Ratio - [ "+correctCount+" / "+testingSet.size()+" ] = "+ acuracy.substring(0,5) +" % accuracy");
+		System.out.println("Correct Ratio - [ "+correctCount+" / "+testingSet.size()+" ] = "+ acuracy.substring(0,7) +" % accuracy");
 		if(failureAnalysis) {
 			System.out.println("\tPredicted poisonious when edible - "+falsePoison);
 			System.out.println("\tPredicted edible when poisionious - "+falseEdible);
 		}
+		return acuracy.substring(0,7);
 	}
 	
-	public void bulkTest() {
+	public String [] bulkTest() {
 		DecisionTree t = null;
+		String [] stats = new String[trainingSize/incrementSize];
 		for(int i = incrementSize; i <=trainingSize; i+=incrementSize) {
 			System.out.println("\nBuilding tree with training set size: "+i);
 			t = buildTree(i);
-			test(t);
+			stats[(i/incrementSize)-1] = test(t);
 			if(debug) System.out.println(t);
 		}
 		if(t != null && verbose) {
 			System.out.println(t.toString());
+		}
+		return stats;
+	}
+	
+	public void printStats(String [] stats) {
+		System.out.println("\n-----------\nStatistics\n-----------\n");
+		for(int i = 0; i<stats.length; i++) {
+			int size = (i+1)*incrementSize;
+			System.out.println("Training Set Size: "+( size> 99? size == 1000? size: " "+size :"  "+size)+"\t\tSuccess: "+stats[i]+"%");
 		}
 	}
 	
@@ -186,11 +192,14 @@ public class DecisionTreeDriver {
 		}
 		
 		Scanner rin = new Scanner(System.in);
-		d.readParams(rin);
+		if(!d.readParams(rin)) {
+			return;
+		}
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file.equals("")? "mushroom_data.txt" : file));
 			d.makeSets(br);
-			d.bulkTest();		
+			String [] stats = d.bulkTest();	
+			d.printStats(stats);
 			
 		} catch(Exception e) {
 			System.out.println("Not Crashing - THIS IS A HELPFUL ERROR MESSAGE :P");

@@ -1,0 +1,200 @@
+Enter training set size in range 250 to 1000: 1000
+
+Enter increment size 10, 25, or 50: 25
+
+Training Set Size: 1000
+Testing  Set Size: 4644
+
+Building tree with training set size: 25
+Correct Ratio - [ 4367 / 4644 ] = 94.0353 % accuracy
+
+Building tree with training set size: 50
+Correct Ratio - [ 4367 / 4644 ] = 94.0353 % accuracy
+
+Building tree with training set size: 75
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 100
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 125
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 150
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 175
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 200
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 225
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 250
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 275
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 300
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 325
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 350
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 375
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 400
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 425
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 450
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 475
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 500
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 525
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 550
+Correct Ratio - [ 4524 / 4644 ] = 97.4160 % accuracy
+
+Building tree with training set size: 575
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 600
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 625
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 650
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 675
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 700
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 725
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 750
+Correct Ratio - [ 4558 / 4644 ] = 98.1481 % accuracy
+
+Building tree with training set size: 775
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 800
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 825
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 850
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 875
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 900
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 925
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 950
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 975
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+Building tree with training set size: 1000
+Correct Ratio - [ 4560 / 4644 ] = 98.1912 % accuracy
+
+----
+Tree
+----
+Attr: 5  --  Num Children: 9
+	- a - Edible
+	- l - Edible
+	- c - Poisonous
+	- y - Edible
+	- f - Poisonous
+	- m - Edible
+	- n - Attr: 20  --  Num Children: 9
+		- k - Edible
+		- n - Edible
+		- b - Edible
+		- h - Edible
+		- r - Poisonous
+		- o - Edible
+		- u - Edible
+		- w - Attr: 1  --  Num Children: 6
+			- b - Poisonous
+			- c - Poisonous
+			- x - Poisonous
+			- f - Edible
+			- k - Edible
+			- s - Poisonous
+		- y - Edible
+	- p - Poisonous
+	- s - Edible
+
+-----------
+Statistics
+-----------
+
+Training Set Size:   25		Success: 94.0353%
+Training Set Size:   50		Success: 94.0353%
+Training Set Size:   75		Success: 97.4160%
+Training Set Size:  100		Success: 97.4160%
+Training Set Size:  125		Success: 97.4160%
+Training Set Size:  150		Success: 97.4160%
+Training Set Size:  175		Success: 97.4160%
+Training Set Size:  200		Success: 97.4160%
+Training Set Size:  225		Success: 97.4160%
+Training Set Size:  250		Success: 97.4160%
+Training Set Size:  275		Success: 97.4160%
+Training Set Size:  300		Success: 97.4160%
+Training Set Size:  325		Success: 97.4160%
+Training Set Size:  350		Success: 97.4160%
+Training Set Size:  375		Success: 97.4160%
+Training Set Size:  400		Success: 97.4160%
+Training Set Size:  425		Success: 97.4160%
+Training Set Size:  450		Success: 97.4160%
+Training Set Size:  475		Success: 97.4160%
+Training Set Size:  500		Success: 97.4160%
+Training Set Size:  525		Success: 97.4160%
+Training Set Size:  550		Success: 97.4160%
+Training Set Size:  575		Success: 98.1481%
+Training Set Size:  600		Success: 98.1481%
+Training Set Size:  625		Success: 98.1481%
+Training Set Size:  650		Success: 98.1481%
+Training Set Size:  675		Success: 98.1481%
+Training Set Size:  700		Success: 98.1481%
+Training Set Size:  725		Success: 98.1481%
+Training Set Size:  750		Success: 98.1481%
+Training Set Size:  775		Success: 98.1912%
+Training Set Size:  800		Success: 98.1912%
+Training Set Size:  825		Success: 98.1912%
+Training Set Size:  850		Success: 98.1912%
+Training Set Size:  875		Success: 98.1912%
+Training Set Size:  900		Success: 98.1912%
+Training Set Size:  925		Success: 98.1912%
+Training Set Size:  950		Success: 98.1912%
+Training Set Size:  975		Success: 98.1912%
+Training Set Size: 1000		Success: 98.1912%

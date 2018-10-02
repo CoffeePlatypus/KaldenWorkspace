@@ -282,7 +282,7 @@ public class DecisionTree {
 	
 	@Override
 	public String toString() {
-		return "Tree:\n" + printTree(root, 1);
+		return "\n----\nTree\n----\n" + printTree(root, 1);
 	}
 	
 	/* recursive logic for printing tree preorder
@@ -345,7 +345,7 @@ public class DecisionTree {
 		public String toString() {
 			String s = "";//"Printing Decision Node\n";
 			if(isLeaf()) {
-				s += attribute == -1? "Edible" : "Poisonious";
+				s += attribute == -1? "Edible" : "Poisonous";
 			}else {
 				s += "Attr: "+(attribute+1)+"  --  ";
 				s += "Num Children: "+children.size();
