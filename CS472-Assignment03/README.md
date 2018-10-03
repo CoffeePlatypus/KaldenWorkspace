@@ -14,6 +14,7 @@ Java 10
 
 ## Usage ##
 I'll need to figure that out sometime 
+Probably just run Marvin program and then send http request
 
 ## File Structure ##
 Leave the error html files in the same directory for best results please
@@ -23,5 +24,6 @@ Leave the error html files in the same directory for best results please
 
 ## Questions ##
 - for errors send html or send http response with error code???
+-throw 404 error with html body
 -does your web browser send a user agent header? if so what does it look like?
 

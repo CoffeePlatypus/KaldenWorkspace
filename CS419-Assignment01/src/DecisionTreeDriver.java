@@ -22,8 +22,8 @@ public class DecisionTreeDriver {
 	public DecisionTreeDriver() {
 		trainingSet = new HashSet<Mushroom>();
 		testingSet = new HashSet<Mushroom>();
-		trainingSize = 1000; //probs change later
-		incrementSize = 25;
+		trainingSize = 0; //probs change later
+		incrementSize = 0;
 		debug = false;
 		failureAnalysis = false;
 		verbose = false;
