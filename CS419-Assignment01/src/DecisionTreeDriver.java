@@ -26,7 +26,7 @@ public class DecisionTreeDriver {
 		incrementSize = 0;
 		debug = false;
 		failureAnalysis = false;
-		verbose = false;
+		verbose = true;
 	}
 	
 	/* read and error check testing size input

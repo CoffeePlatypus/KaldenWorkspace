@@ -347,7 +347,7 @@ public class DecisionTree {
 			if(isLeaf()) {
 				s += attribute == -1? "Edible" : "Poisonous";
 			}else {
-				s += "Attr: "+(attribute+1)+"  --  ";
+				s += "Attr: "+(attribute)+"  --  ";
 				s += "Num Children: "+children.size();
 			}
 			return s;
