@@ -22,11 +22,11 @@ public class DecisionTreeDriver {
 	public DecisionTreeDriver() {
 		trainingSet = new HashSet<Mushroom>();
 		testingSet = new HashSet<Mushroom>();
-		trainingSize = 0; //probs change later
+		trainingSize = 0; 
 		incrementSize = 0;
 		debug = false;
 		failureAnalysis = false;
-		verbose = true;
+		verbose = false;
 	}
 	
 	/* read and error check testing size input

@@ -10,6 +10,17 @@ Implements the decision tree learning algorithm to predict if mushrooms are pois
 ### Language ###
 Java 10
 
+### Content ###
+- src 
+	- Mushroom.java
+	- DecisionTree.java
+	- DecisionTreeDriver.java
+- output
+	- output1.txt
+	- output1graph.png
+	- output2.txt
+	- output2graph.png
+
 ### Usage ###
 Run from command line in following format 
  
