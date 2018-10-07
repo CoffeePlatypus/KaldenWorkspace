@@ -137,7 +137,7 @@ public class DecisionTree {
 						System.out.print(pent+nent);
 						System.out.print("\t"+attrDis[i][0]/(double)examples.size()+"\n");
 					}
-					rem += (attrDis[i][0] / (double)examples.size()) * pent;
+					rem += (attrDis[i][0] / (double)examples.size()) * pent+nent;
 				}
 			}
 			if(debug) {
