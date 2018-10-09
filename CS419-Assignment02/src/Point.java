@@ -17,6 +17,13 @@ public class Point {
 		return coordinates[i];
 	}
 	
+	public double distance(Point p) {
+		double dis = 0;
+		for(int i = 0; i < dimension; i++) {
+			dis += Math.pow(coordinates[i] + p.coordinates[i], 2);
+		}
+		return Math.sqrt(dis);
+	}
 	
 	public String toString() {
 		String s = "(";
