@@ -1,15 +1,12 @@
 
 public class Point {
-	int dimension;
 	double [] coordinates;
 	
 	public Point(int d) {
-		dimension = d;
 		coordinates = new double[d];
 	}
 	
-	public Point(int d, double[] c) {
-		dimension = d;
+	public Point(double[] c) {
 		coordinates = c;
 	}
 	
@@ -19,7 +16,7 @@ public class Point {
 	
 	public double distance(Point p) {
 		double dis = 0;
-		for(int i = 0; i < dimension; i++) {
+		for(int i = 0; i < coordinates.length; i++) {
 			dis += Math.pow(coordinates[i] + p.coordinates[i], 2);
 		}
 		return Math.sqrt(dis);
@@ -27,8 +24,8 @@ public class Point {
 	
 	public String toString() {
 		String s = "(";
-		for(int i = 0; i < dimension; i++) {
-			s+= (i +1) < dimension ? coordinates[i] +" ": coordinates[i];
+		for(int i = 0; i < coordinates.length; i++) {
+			s+= (i +1) < coordinates.length ? coordinates[i] +" ": coordinates[i];
 			
 		}
 		return s+")";

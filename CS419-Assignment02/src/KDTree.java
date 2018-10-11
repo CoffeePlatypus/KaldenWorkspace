@@ -48,6 +48,30 @@ public class KDTree {
 		return nodey;
 	}
 	
+	private Point [] findBoundingBox(LinkedList<Point> data){
+		double [] maxes = new double[dimension];
+		double [] mins = new double[dimension];
+		
+		Iterator<Point> datarator = data.iterator();
+		// TODO error check empty data
+		Point temp = datarator.next();
+		for(int i = 0; i<dimension; i++) {
+			maxes[i] = temp.getIthCoordinate(i);
+			mins[i] = temp.getIthCoordinate(i);
+		}
+		while(datarator.hasNext()) {
+			temp = datarator.next();
+			for(int i = 0; i<dimension; i++) {
+				if(maxes[i] < temp.getIthCoordinate(i)) {
+					maxes[i] = temp.getIthCoordinate(i);
+				}else if (mins[i] > temp.getIthCoordinate(i)) {
+					mins[i] = temp.getIthCoordinate(i);
+				}
+			}
+		}
+		return new Point[]{new Point(mins), new Point(maxes)};
+	}
+	
 	public LinkedList<Point> mergeSort(LinkedList<Point> data, int d){
 		if(data.size() <= 1) return data;
 		LinkedList<Point> left = new LinkedList<Point>();
@@ -61,55 +85,27 @@ public class KDTree {
 		while(!data.isEmpty()) {
 			right.push(data.pop());
 		}
-		left = mergeSort(left, d);
-		System.out.println("Left "+left);
-		right = mergeSort(right, d);
-		System.out.println("Right "+right);
+		mergeSort(left, d);
+		mergeSort(right, d);
 		return merge(left, right, data, d);
-	}
-	
-	private Point [] findBoundingBox(LinkedList<Point> data){
-		double [] maxes = new double[dimension];
-		double [] mines = new double[dimension];
-		
-		Iterator<Point> datarator = data.iterator();
-		// TODO error check empty data
-		Point temp = datarator.next();
-		for(int i = 0; i<dimension; i++) {
-			maxes[i] = temp.getIthCoordinate(i);
-			mines[i] = temp.getIthCoordinate(i);
-		}
-		while(datarator.hasNext()) {
-			temp = datarator.next();
-			for(int i = 0; i<dimension; i++) {
-				if(maxes[i] < temp.getIthCoordinate(i)) {
-					maxes[i] = temp.getIthCoordinate(i);
-				}else if (mines[i] > temp.getIthCoordinate(i)) {
-					mines[i] = temp.getIthCoordinate(i);
-				}
-			}
-		}
-		return new Point[]{new Point(dimension,mines), new Point(dimension,maxes)};
 	}
 	
 	public LinkedList<Point> merge(LinkedList<Point> left, LinkedList<Point> right, LinkedList<Point> data, int d) {
 		while(!left.isEmpty() && !right.isEmpty()) {
-			double n1=left.get(0).getIthCoordinate(d);
-			double n2=right.get(0).getIthCoordinate(d);
+			double n1=left.getFirst().getIthCoordinate(d);
+			double n2=right.getFirst().getIthCoordinate(d);
 			
 			if(n1<n2) {
-				System.out.println(n1 +" < "+n2);
-				data.push(left.pop());
-			}else{
-				System.out.println(n1 +" > "+n2);
-				data.push(right.pop());
+				data.addLast(left.pop());
+			}else {
+				data.addLast(right.pop());
 			}
 		}
 		while(!left.isEmpty()) {
-			data.push(left.pop());
+			data.addLast(left.pop());
 		}
 		while(!right.isEmpty()) {
-			data.push(right.pop());
+			data.addLast(right.pop());
 		}
 		return data;
 	}

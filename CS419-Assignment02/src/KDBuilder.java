@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -16,7 +15,7 @@ public class KDBuilder {
 		String line = rin.readLine();
 		
 		while(line != null) {
-			data.push(new Point(dimension, mapStringToDouble(line.split(" "))));
+			data.push(new Point(mapStringToDouble(line.split(" "))));
 			line = rin.readLine();
 		}
 		return data;
