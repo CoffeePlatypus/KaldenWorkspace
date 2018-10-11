@@ -32,6 +32,5 @@ public class Point {
 			
 		}
 		return s+")";
-	}
-			
+	}		
 }
