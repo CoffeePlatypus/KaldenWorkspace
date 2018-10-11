@@ -15,4 +15,4 @@ Java 10
 ###Usage###
 
 ###Questions###
-- what sort of valuses can the points be expected to have?
+- median? do I calculate my median differently?

@@ -22,7 +22,8 @@ public class KDBuilder {
 	}
 	
 	/* Maps an array of string to an array of doubles. Curse java for not having map built in for arrays
-	 * 
+	 * @param s - String array to make doubles
+	 * @returns - an array of doubles
 	 */
 	private double[] mapStringToDouble(String [] s) {
 		double [] d = new double[s.length];
@@ -45,7 +46,7 @@ public class KDBuilder {
 		LinkedList<Point> data = driver.readData(rin);
 		System.out.println(data);
 		
-		KDTree tree = driver.createTree(5,data);
+		KDTree tree = driver.createTree(4,data);
 		
 		
 

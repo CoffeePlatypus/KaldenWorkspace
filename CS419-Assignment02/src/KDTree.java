@@ -16,38 +16,44 @@ public class KDTree {
 	
 	public void createTree(LinkedList<Point> data) {
 		root = createTree(data, 0);
+		System.out.println(recursivePrint(root,""));
 	}
 	
+	/* 
+	 * 
+	 */
 	private Node createTree(LinkedList<Point> data, int dim) {
 		if(data.size() <= setSize) {
 			return new Node(data, findBoundingBox(data));
 		}
-		System.out.println("Pre Sort "+dim+"---");
-		System.out.println(data);
-		data = mergeSort(data,dim);
-		System.out.println("After ---\n"+ data);
+		mergeSort(data,dim);
 		int half = data.size()/2;
 		double median = data.get(half).getIthCoordinate(dim);
+		System.out.println(data);
+		System.out.println("med-"+median);
 		if(data.size() % 2 == 0) {
-			half++;
-			median = (median + data.get(half).getIthCoordinate(dim)) / 2;
+			median = (median + data.get(half + 1).getIthCoordinate(dim)) / 2;
 		}
 		Node nodey = new Node(median, dim, findBoundingBox(data));
 		System.out.println(nodey);
 		LinkedList<Point> dataPlus = new LinkedList<Point>();
 		LinkedList<Point> dataMinus = new LinkedList<Point>();
-		for(int i = 0; i<data.size(); i++) {
-			if(i < half) {
-				dataMinus.push(data.get(i));
-			}else {
-				dataPlus.push(data.get(i));
-			}
+		System.out.println(data);
+		while(!data.isEmpty() && data.peek().coordinates[dim] < median) {
+			dataMinus.push(data.pop());
+		}
+		while(!data.isEmpty()) {
+			dataPlus.push(data.pop());
 		}
 		nodey.setLeft(createTree(dataMinus,dim));
 		nodey.setRight(createTree(dataPlus,dim));
 		return nodey;
 	}
 	
+	/* Finds the boundingBox for a LinkedList of points
+	 * @param data - LinkedList of points
+	 * @returns Point[] - array of size two which describes a some dimensional shape which contains all the points in data
+	 */
 	private Point [] findBoundingBox(LinkedList<Point> data){
 		double [] maxes = new double[dimension];
 		double [] mins = new double[dimension];
@@ -72,8 +78,12 @@ public class KDTree {
 		return new Point[]{new Point(mins), new Point(maxes)};
 	}
 	
-	public LinkedList<Point> mergeSort(LinkedList<Point> data, int d){
-		if(data.size() <= 1) return data;
+	/* Sorts a LinkedList of points based on dimension d of the points
+	 * @param data - the list to sort
+	 * @param d - the dimension to sort on
+	 */
+	public void mergeSort(LinkedList<Point> data, int d){
+		if(data.size() <= 1) return;
 		LinkedList<Point> left = new LinkedList<Point>();
 		LinkedList<Point> right = new LinkedList<Point>();
 		int half=data.size()/2;
@@ -87,10 +97,16 @@ public class KDTree {
 		}
 		mergeSort(left, d);
 		mergeSort(right, d);
-		return merge(left, right, data, d);
+		merge(left, right, data, d);
 	}
 	
-	public LinkedList<Point> merge(LinkedList<Point> left, LinkedList<Point> right, LinkedList<Point> data, int d) {
+	
+	/* Merges a two sorted LinkedLists of points into one sorted LinkedList - the lists are sorted by dimension d of the points
+	 * @param left - sorted LinkedList of points
+	 * @param right - sorted LinkedList of points
+	 * @param data - the LinkedList that left and right are merged into
+	 */
+	public void merge(LinkedList<Point> left, LinkedList<Point> right, LinkedList<Point> data, int d) {
 		while(!left.isEmpty() && !right.isEmpty()) {
 			double n1=left.getFirst().getIthCoordinate(d);
 			double n2=right.getFirst().getIthCoordinate(d);
@@ -107,7 +123,17 @@ public class KDTree {
 		while(!right.isEmpty()) {
 			data.addLast(right.pop());
 		}
-		return data;
+	}
+	
+	public String toString() {
+		return recursivePrint(root,"");		
+	}
+	
+	private String recursivePrint(Node n, String path) {
+		if(n.isLeaf()) {
+			return path+": " +n+"\n";
+		}
+		return recursivePrint(n.left, path+"L") + recursivePrint(n.right, path+"R");
 	}
 	
 	private class Node{
@@ -146,7 +172,7 @@ public class KDTree {
 		}
 		
 		public boolean isLeaf() {
-			return dim < 0;
+			return dim == -1;
 		}
 		
 		public String toString() {
@@ -154,6 +180,7 @@ public class KDTree {
 			if(isLeaf()) {
 				s+= "Leaf: "+data+"\n";
 			}else {
+				s+= "Dim: "+dim+"\n";
 				s+= "Median: "+median+"\n";
 			}
 			return s;
