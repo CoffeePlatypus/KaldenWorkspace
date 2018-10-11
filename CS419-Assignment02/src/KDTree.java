@@ -16,7 +16,32 @@ public class KDTree {
 	
 	public void createTree(LinkedList<Point> data) {
 		root = createTree(data, 0);
-		System.out.println(recursivePrint(root,""));
+		
+	}
+	
+	public void testPoint(Point p) {
+		System.out.println(p);
+		Node n = findNeighNode(root, p);
+		System.out.println(n);
+	}
+	
+	/* Find the node which contains the point's nearest neighbor
+	 * TODO consider empty left or right
+	 */
+	public Node findNeighNode(Node n, Point p) {
+		System.out.println(n.boundingBox[0]+" "+n.boundingBox[1]);
+		System.out.println("Med: "+n.getMedian() );
+		System.out.println("dim "+ n.getDim());
+		if(n.isLeaf()) {
+			System.out.println("Leaf");
+			return n;
+		}else if(p.getIthCoordinate(n.getDim()) < n.getMedian()) {
+			System.out.print("L");
+			return findNeighNode(n.getLeft(), p);
+		}else {
+			System.out.print("R");
+			return findNeighNode(n.getRight(), p);
+		}
 	}
 	
 	/* 
@@ -29,15 +54,16 @@ public class KDTree {
 		mergeSort(data,dim);
 		int half = data.size()/2;
 		double median = data.get(half).getIthCoordinate(dim);
-		System.out.println(data);
-		System.out.println("med-"+median);
-		if(data.size() % 2 == 0) {
-			median = (median + data.get(half + 1).getIthCoordinate(dim)) / 2;
-		}
+//		System.out.println(data);
+//		System.out.println("med-"+median);
+//		if(data.size() % 2 == 0) {
+//			median = (median + data.get(half + 1).getIthCoordinate(dim)) / 2;
+//		}
 		Node nodey = new Node(median, dim, findBoundingBox(data));
 		System.out.println(nodey);
 		LinkedList<Point> dataPlus = new LinkedList<Point>();
 		LinkedList<Point> dataMinus = new LinkedList<Point>();
+		System.out.println("Sorted on dim: "+ dim);
 		System.out.println(data);
 		while(!data.isEmpty() && data.peek().coordinates[dim] < median) {
 			dataMinus.push(data.pop());
@@ -45,8 +71,8 @@ public class KDTree {
 		while(!data.isEmpty()) {
 			dataPlus.push(data.pop());
 		}
-		nodey.setLeft(createTree(dataMinus,dim));
-		nodey.setRight(createTree(dataPlus,dim));
+		nodey.setLeft(createTree(dataMinus,(dim + 1) % dimension));
+		nodey.setRight(createTree(dataPlus,(dim + 1) % dimension));
 		return nodey;
 	}
 	
@@ -57,9 +83,9 @@ public class KDTree {
 	private Point [] findBoundingBox(LinkedList<Point> data){
 		double [] maxes = new double[dimension];
 		double [] mins = new double[dimension];
+		if (data.isEmpty()) return new Point[]{new Point(mins), new Point(maxes)};
 		
 		Iterator<Point> datarator = data.iterator();
-		// TODO error check empty data
 		Point temp = datarator.next();
 		for(int i = 0; i<dimension; i++) {
 			maxes[i] = temp.getIthCoordinate(i);
@@ -126,23 +152,24 @@ public class KDTree {
 	}
 	
 	public String toString() {
-		return recursivePrint(root,"");		
+		return recursivePrint(root, root.isLeaf()?"ROOT":"");		
 	}
 	
 	private String recursivePrint(Node n, String path) {
 		if(n.isLeaf()) {
-			return path+": " +n+"\n";
+			return path+": " +n;
+//			return n+"";
 		}
 		return recursivePrint(n.left, path+"L") + recursivePrint(n.right, path+"R");
 	}
 	
 	private class Node{
-		double median;
-		int dim; // -1 for leaf
-		Point [] boundingBox;
-		LinkedList<Point> data;
-		Node left;
-		Node right;
+		private double median;
+		private int dim; // -1 for leaf
+		private Point [] boundingBox;
+		private LinkedList<Point> data;
+		private Node left;
+		private Node right;
 		
 		private Node(double m, int d, Point[] bb) {
 			median = m;
@@ -175,8 +202,26 @@ public class KDTree {
 			return dim == -1;
 		}
 		
+		public double getMedian() {
+			return median;
+		}
+		
+		public int getDim() {
+			return dim;
+		}
+		
+		public Node getLeft() {
+			return left;
+		}
+		
+		public Node getRight() {
+			return right;
+		}
+		
 		public String toString() {
 			String s = "Bounding Box: ["+boundingBox[0]+", "+boundingBox[1]+"]\n";
+			//s += "Py: "+ boundingBox[0].getIthCoordinate(0)+" "+boundingBox[0].getIthCoordinate(1) + " "+ (boundingBox[1].getIthCoordinate(0) - boundingBox[0].getIthCoordinate(0)) +" " + (boundingBox[1].getIthCoordinate(1) - boundingBox[0].getIthCoordinate(1))+"\n";
+			
 			if(isLeaf()) {
 				s+= "Leaf: "+data+"\n";
 			}else {

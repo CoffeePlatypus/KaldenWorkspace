@@ -40,16 +40,17 @@ public class KDBuilder {
 	}
 
 	public static void main(String[] args) throws IOException{
-		BufferedReader rin = new BufferedReader(new FileReader("inputData/2d_small.txt"));
+		BufferedReader rin = new BufferedReader(new FileReader("inputData/2dtest.txt"));
 		String line = rin.readLine();
 		KDBuilder driver = new KDBuilder(Integer.parseInt(line));
 		LinkedList<Point> data = driver.readData(rin);
 		System.out.println(data);
 		
-		KDTree tree = driver.createTree(4,data);
+		KDTree tree = driver.createTree(5,data);
+		System.out.println(tree);
 		
-		
-
+		double[] d = {0.5,0.5};
+		tree.testPoint(new Point( d ));
 	}
 
 }
