@@ -7,11 +7,13 @@ public class KDTree {
 	private int dimension;
 	private int setSize;
 	private Node root;
+	private int printIndex;
 	
 	public KDTree(int d, int s) {
 		dimension = d;
 		setSize = s;
 		root = null;
+		printIndex = 0;
 	}
 	
 	public void createTree(LinkedList<Point> data) {
@@ -20,31 +22,44 @@ public class KDTree {
 	}
 	
 	public void testPoint(Point p) {
-		System.out.println(p);
+//		System.out.println(p);
 		Node n = findNeighNode(root, p);
-		System.out.println(n);
+		LinkedList<Point> data = n.getData();
+		if(data.size() == 0 ) {
+			System.out.println(p+" has no nearest neighbor in empty set");
+			return;
+		}
+		System.out.println(p +" in set "+data);
+		double minDistance = p.distance(data.get(0));
+		int mindex = 0;
+		for(int i = 0; i<data.size(); i++) {
+			double temp = p.distance(data.get(i));
+			if(temp < minDistance) {
+				minDistance = temp;
+				mindex = i;
+			}
+		}
+		System.out.println("Nearest neighbour: "+data.get(mindex)+ " - Distance: "+minDistance+"\n");
 	}
 	
 	/* Find the node which contains the point's nearest neighbor
 	 * TODO consider empty left or right
 	 */
 	public Node findNeighNode(Node n, Point p) {
-		System.out.println(n.boundingBox[0]+" "+n.boundingBox[1]);
-		System.out.println("Med: "+n.getMedian() );
-		System.out.println("dim "+ n.getDim());
+//		System.out.println(n.boundingBox[0]+" "+n.boundingBox[1]);
+//		System.out.println("Med: "+n.getMedian() );
+//		System.out.println("dim "+ n.getDim());
+//		if(!n.isLeaf())System.out.println(p.getIthCoordinate(n.getDim())+" < "+ n.getMedian());
 		if(n.isLeaf()) {
-			System.out.println("Leaf");
 			return n;
 		}else if(p.getIthCoordinate(n.getDim()) < n.getMedian()) {
-			System.out.print("L");
 			return findNeighNode(n.getLeft(), p);
 		}else {
-			System.out.print("R");
 			return findNeighNode(n.getRight(), p);
 		}
 	}
 	
-	/* 
+	/* Creates tree from magic algorytims 
 	 * 
 	 */
 	private Node createTree(LinkedList<Point> data, int dim) {
@@ -56,15 +71,12 @@ public class KDTree {
 		double median = data.get(half).getIthCoordinate(dim);
 //		System.out.println(data);
 //		System.out.println("med-"+median);
-//		if(data.size() % 2 == 0) {
-//			median = (median + data.get(half + 1).getIthCoordinate(dim)) / 2;
-//		}
 		Node nodey = new Node(median, dim, findBoundingBox(data));
-		System.out.println(nodey);
+//		System.out.println(nodey);
 		LinkedList<Point> dataPlus = new LinkedList<Point>();
 		LinkedList<Point> dataMinus = new LinkedList<Point>();
-		System.out.println("Sorted on dim: "+ dim);
-		System.out.println(data);
+//		System.out.println("Sorted on dim: "+ dim);
+//		System.out.println(data);
 		while(!data.isEmpty() && data.peek().coordinates[dim] < median) {
 			dataMinus.push(data.pop());
 		}
@@ -152,13 +164,16 @@ public class KDTree {
 	}
 	
 	public String toString() {
+		printIndex = 0;
 		return recursivePrint(root, root.isLeaf()?"ROOT":"");		
 	}
 	
+	/* Recursively generates string representation of leaves
+	 * 
+	 */
 	private String recursivePrint(Node n, String path) {
 		if(n.isLeaf()) {
-			return path+": " +n;
-//			return n+"";
+			return (printIndex++) +" : "+path+" : " +n;
 		}
 		return recursivePrint(n.left, path+"L") + recursivePrint(n.right, path+"R");
 	}
@@ -186,16 +201,16 @@ public class KDTree {
 			boundingBox = bb;
 		}
 		
-		private void addData(Point p) {
-			data.add(p);
-		}
-		
 		private void setLeft(Node l) {
 			left = l;
 		}
 		
 		private void setRight(Node r) {
 			right = r;
+		}
+		
+		public LinkedList<Point> getData() {
+			return data;
 		}
 		
 		public boolean isLeaf() {
@@ -220,10 +235,10 @@ public class KDTree {
 		
 		public String toString() {
 			String s = "Bounding Box: ["+boundingBox[0]+", "+boundingBox[1]+"]\n";
-			//s += "Py: "+ boundingBox[0].getIthCoordinate(0)+" "+boundingBox[0].getIthCoordinate(1) + " "+ (boundingBox[1].getIthCoordinate(0) - boundingBox[0].getIthCoordinate(0)) +" " + (boundingBox[1].getIthCoordinate(1) - boundingBox[0].getIthCoordinate(1))+"\n";
+//			s += "Py: "+ boundingBox[0].getIthCoordinate(0)+" "+boundingBox[0].getIthCoordinate(1) + " "+ (boundingBox[1].getIthCoordinate(0) - boundingBox[0].getIthCoordinate(0)) +" " + (boundingBox[1].getIthCoordinate(1) - boundingBox[0].getIthCoordinate(1))+"\n";
 			
 			if(isLeaf()) {
-				s+= "Leaf: "+data+"\n";
+				s+= "\t Leaf Data: "+data+"\n";
 			}else {
 				s+= "Dim: "+dim+"\n";
 				s+= "Median: "+median+"\n";

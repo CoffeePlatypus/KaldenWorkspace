@@ -1,13 +1,17 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class KDBuilder {
 	private int dimension;
+	private boolean debug;
 	
 	public KDBuilder(int d) {
 		dimension = d;
+		debug = false;
 	}
 	
 	public LinkedList<Point> readData(BufferedReader rin) throws IOException{
@@ -40,17 +44,57 @@ public class KDBuilder {
 	}
 
 	public static void main(String[] args) throws IOException{
-		BufferedReader rin = new BufferedReader(new FileReader("inputData/2dtest.txt"));
-		String line = rin.readLine();
-		KDBuilder driver = new KDBuilder(Integer.parseInt(line));
-		LinkedList<Point> data = driver.readData(rin);
-		System.out.println(data);
-		
-		KDTree tree = driver.createTree(5,data);
-		System.out.println(tree);
-		
-		double[] d = {0.5,0.5};
-		tree.testPoint(new Point( d ));
+		try {
+			BufferedReader rin = new BufferedReader(new FileReader("inputData/3d.txt"));
+			String line = rin.readLine();
+			KDBuilder driver = new KDBuilder(Integer.parseInt(line));
+			LinkedList<Point> data = driver.readData(rin);
+			rin.close();
+			if (driver.debug)System.out.println("Input data: "+data);
+			
+			KDTree tree = driver.createTree(5,data);
+			Scanner scan = new Scanner(System.in);
+			
+			System.out.println("Print leaves [Y|n]? : ");
+			String s = scan.next();
+			
+			if (s.equalsIgnoreCase("y")) System.out.println(tree);
+			
+			System.out.println("Test data [Y|n]? : ");
+			s = scan.next();
+			if(s.equalsIgnoreCase("y")) {
+				System.out.println("Enter file name: ");
+				s = scan.next();
+				BufferedReader testFile = new BufferedReader(new FileReader(s));
+//				BufferedReader testFile = new BufferedReader(new FileReader("inputData/3dtest.txt"));
+				int testDim = Integer.parseInt(testFile.readLine());
+				if (testDim != driver.dimension) {
+					System.out.println("Test files and tree dimesion mismatch");
+					System.out.println("Beep bloop bloop... \nGoodbye! \n: ]");
+					testFile.close();
+					return;
+				}
+				LinkedList<Point> test = driver.readData(testFile);
+				testFile.close();
+				
+				for(int i = 0; i<test.size(); i++) {
+					if(driver.debug) System.out.println(i);
+					tree.testPoint(test.get(i));
+				}
+			}
+			double [] d = {.97, .098};
+			tree.testPoint(new Point(d));
+			scan.close();
+			System.out.println("Beep bloop bloop... \nGoodbye! \n: ]");
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Beep bloop bloop...\nFile Not Found \n: [");
+		} catch (IOException e) {
+			System.out.println("Beep bloop bloop...\nIO Error \n: [");
+		} catch (Exception e) {
+			System.out.println("Beep bloop bloop...\nERROR!!? \n: [");
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 def main () :
-    f = open("2d_large.txt", "r")
+    f = open("2d_small.txt", "r")
     fig,ax = plt.subplots(1)
     colors = ["black", "red", "green", "purple","blue"]
     i = 0
@@ -30,6 +30,7 @@ def main () :
             print("bad size")
 
     plt.axis([0, 1, 0, 1]) # [xmin, xmax, ymin, ymax]
+    plt.scatter(.5, .5, s=25, c="red", alpha=0.5)
     # plt.ylabel("Accuracy %")
     # plt.xlabel("Training Set Size")
     # plt.grid(True)
