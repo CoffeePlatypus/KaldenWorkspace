@@ -175,6 +175,7 @@ public class KDTree {
 		if(n.isLeaf()) {
 			return (printIndex++) +" : "+path+" : " +n;
 		}
+		
 		return recursivePrint(n.left, path+"L") + recursivePrint(n.right, path+"R");
 	}
 	
@@ -234,6 +235,7 @@ public class KDTree {
 		}
 		
 		public String toString() {
+			if (data.isEmpty()) return "\n";
 			String s = "Bounding Box: ["+boundingBox[0]+", "+boundingBox[1]+"]\n";
 //			s += "Py: "+ boundingBox[0].getIthCoordinate(0)+" "+boundingBox[0].getIthCoordinate(1) + " "+ (boundingBox[1].getIthCoordinate(0) - boundingBox[0].getIthCoordinate(0)) +" " + (boundingBox[1].getIthCoordinate(1) - boundingBox[0].getIthCoordinate(1))+"\n";
 			

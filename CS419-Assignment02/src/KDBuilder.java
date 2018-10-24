@@ -45,14 +45,14 @@ public class KDBuilder {
 
 	public static void main(String[] args) throws IOException{
 		try {
-			BufferedReader rin = new BufferedReader(new FileReader("inputData/3d.txt"));
+			BufferedReader rin = new BufferedReader(new FileReader((args.length >= 1) ? args[0]:"inputData/2d_small.txt"));
 			String line = rin.readLine();
 			KDBuilder driver = new KDBuilder(Integer.parseInt(line));
 			LinkedList<Point> data = driver.readData(rin);
 			rin.close();
 			if (driver.debug)System.out.println("Input data: "+data);
 			
-			KDTree tree = driver.createTree(5,data);
+			KDTree tree = driver.createTree((args.length >= 2) ? Integer.parseInt(args[1]): 1 ,data);
 			Scanner scan = new Scanner(System.in);
 			
 			System.out.println("Print leaves [Y|n]? : ");
@@ -65,6 +65,7 @@ public class KDBuilder {
 			if(s.equalsIgnoreCase("y")) {
 				System.out.println("Enter file name: ");
 				s = scan.next();
+				System.out.println(s);
 				BufferedReader testFile = new BufferedReader(new FileReader(s));
 //				BufferedReader testFile = new BufferedReader(new FileReader("inputData/3dtest.txt"));
 				int testDim = Integer.parseInt(testFile.readLine());
@@ -82,17 +83,17 @@ public class KDBuilder {
 					tree.testPoint(test.get(i));
 				}
 			}
-			double [] d = {.97, .098};
-			tree.testPoint(new Point(d));
 			scan.close();
 			System.out.println("Beep bloop bloop... \nGoodbye! \n: ]");
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("Beep bloop bloop...\nFile Not Found \n: [");
+			System.out.println("Beep bloop bloop...\nFile Not Found!\n:' [");
 		} catch (IOException e) {
-			System.out.println("Beep bloop bloop...\nIO Error \n: [");
+			System.out.println("Beep bloop bloop...\nIO Error!\n:' [");
+		}catch (NumberFormatException e) {
+			System.out.println("Beep bloop bloop...\nBad Number!\n:' [");
 		} catch (Exception e) {
-			System.out.println("Beep bloop bloop...\nERROR!!? \n: [");
+			System.out.println("Beep bloop bloop...\nERROR!!? \n:' [");
 			e.printStackTrace();
 		}
 	}
