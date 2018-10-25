@@ -1,10 +1,18 @@
 
 public class Point {
-	int [] classification;
+	double [] classification;
 	double [] data;
 	
-	public Point(double [] d, int [] c) {
+	public Point(double [] d, double [] c) {
 		data = d;
 		classification = c;
+	}
+	
+	public double [] getData() {
+		return data;
+	}
+	
+	public double [] getClassification() {
+		return classification;
 	}
 }

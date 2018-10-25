@@ -1,7 +1,8 @@
 
 public class Layer {
-	Perceptron [] perceptrons;
-	double [] output;
+	private Perceptron [] perceptrons;
+	private double [] output;
+	private double [] errors;
 	
 	public Layer(int inputLen, int outputLen) {
 		perceptrons = new Perceptron[outputLen];
@@ -9,6 +10,7 @@ public class Layer {
 			perceptrons[i] = new Perceptron(inputLen);
 		}
 		output = new double[outputLen];
+		errors = new double[outputLen];
 	}
 	
 	/* Constructor for first input layer?
@@ -33,6 +35,20 @@ public class Layer {
 			output[i] = perceptrons[i].getOutput(input);
 		}
 		return output;
+	}
+	
+	public double [] calcuateError(double [] c) {
+		for(int i = 0; i<output.length; i++) {
+			System.out.println(i);
+			errors[i] = c[i] - output[i];
+		}
+		return errors;
+	}
+	
+	public void updateWeights() {
+		for(int i = 0; i<perceptrons.length; i++) {
+			perceptrons[i].updateWeights(errors[i]);
+		}
 	}
 	
 	public String toString() {
