@@ -1,5 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /* 1 - load sql driver (JDBC) into project - add to build path
@@ -30,6 +32,25 @@ public class Database {
 		connection.close();
 	}
 	
+	public ResultSet runQuery(String q) throws SQLException{
+		PreparedStatement statement = connection.prepareStatement(q);
+		return statement.executeQuery();
+	}
+	
+	public ResultSet runQuery(String q, String arg) throws SQLException{
+		PreparedStatement statement = connection.prepareStatement(q);
+		statement.setString(1, arg);
+		return statement.executeQuery();
+	}
+	
+	public void insertEmployee(String q, Employee e) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement(q);
+		statement.setString(1, e.getSsn());
+		statement.setDouble(2, e.getSalary());
+		statement.setString(3, e.getFirstName());
+		statement.setString(4, e.getLastName());
+		statement.executeUpdate();
+	}
 	
 	
 	

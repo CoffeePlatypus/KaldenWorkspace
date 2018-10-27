@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Point {
 	double [] classification;
@@ -15,4 +16,22 @@ public class Point {
 	public double [] getClassification() {
 		return classification;
 	}
+	
+	public String toString() {
+		return "<"+Arrays.toString(data)+",\n"+Arrays.toString(classification);
+	}
+	
+	public int getCassificationLength() {
+		return classification.length;
+	}
+	
+	public int getDataLength() {
+		return data.length;
+	}
+	
+//	public int getClassificationIndex() {
+//		for(int i = 0; i<classification.length; i++) {
+//			
+//		}
+//	}
 }
