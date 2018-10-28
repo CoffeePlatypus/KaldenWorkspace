@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class NeuralNet {
 	private Layer [] net;
 	private ArrayList<Point> examples;
-	private boolean debug = true;
+	private boolean debug = false;
 	
 	public NeuralNet(int inputPointLen, int [] layerLens, ArrayList<Point> ex) {
 		examples = ex;
@@ -20,7 +20,7 @@ public class NeuralNet {
 	}
 	
 	public void backPropLearning() {
-		for (int j = 0; j <10; j++) {
+		for (int j = 0; j <1000; j++) {
 			Point point = examples.get(j%examples.size());
 			
 			if (debug) System.out.println("put point into input layer");
@@ -56,7 +56,7 @@ public class NeuralNet {
 	private boolean testPoint(Point p) {
 		System.out.println(p);
 		net[0].calculateOutput(p.getData());
-		System.out.println(net[0]);
+		System.out.println("Ouput layer 1 "+net[0]);
 		for(int i = 1; i<net.length; i++) {
 			Layer l = net[i];
 			System.out.println(l);
@@ -73,22 +73,26 @@ public class NeuralNet {
 				index = i;
 			}
 		}
-		System.out.println(max);
-		System.out.println(index);
-		
-		return p.getClassification()[index] == 1;
+		System.out.println(max+" : "+index);
+		return p.getClassification()[index] == 1.0;
 	}
 	
 	public double testData() {
-		int correctCount = 0;
-		for(int i = 0; i<10; i++) {
+		System.out.println("Test Data...");
+		double correctCount = 0.0;
+		for(int i = 0; i<2; i++) {
 			Point p = examples.get(i);
 			if(testPoint(p)) {
+				System.out.println("correct");
 				correctCount++;
+			}else {
+				System.out.println("incorrect");
 			}
 		}
 		
-		return correctCount/examples.size();
+		System.out.println("Accuracy: "+correctCount/examples.size());
+		
+		return (correctCount/examples.size())*10;
 	}
 
 }

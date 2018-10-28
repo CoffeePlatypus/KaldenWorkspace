@@ -18,7 +18,7 @@ public class Point {
 	}
 	
 	public String toString() {
-		return "<"+Arrays.toString(data)+",\n"+Arrays.toString(classification);
+		return "<"+Arrays.toString(data)+", "+Arrays.toString(classification)+">";
 	}
 	
 	public int getCassificationLength() {
@@ -29,9 +29,12 @@ public class Point {
 		return data.length;
 	}
 	
-//	public int getClassificationIndex() {
-//		for(int i = 0; i<classification.length; i++) {
-//			
-//		}
-//	}
+	public int getClassificationIndex() {
+		for(int i = 0; i<classification.length; i++) {
+			if(classification[i] == 1) {
+				return 1;
+			}
+		}
+		return -1;
+	}
 }

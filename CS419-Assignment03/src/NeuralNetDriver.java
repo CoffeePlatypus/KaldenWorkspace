@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class NeuralNetDriver {
 	
 	public NeuralNetDriver() {
-		
 	}
 	
 	public ArrayList<Point> readTrainingData(String path) throws IOException {
@@ -56,14 +55,22 @@ public class NeuralNetDriver {
 	}
 	
 	public void testrun3() {
-		double [] d = { 0.2, 0.3};
-		double [] c = { 1, 0};
-		Point p = new Point(d,c);
+		double [] d1 = { 0.2, 0.3};
+		double [] c1 = { 1, 0};		
+		Point p1 = new Point(d1,c1);
+		
+		double [] d2 = {0.5, 0.8};
+		double [] c2 = {0, 1};
+		Point p2 = new Point(d2, c2);
+		
 		int[] lens = {3,2};
 		ArrayList<Point> l = new ArrayList<Point>();
-		l.add(p);
+		l.add(p1);
+		l.add(p2);
+		
 		NeuralNet n = new NeuralNet(2, lens, l);
 		n.backPropLearning();
+		n.testData();
 //		System.out.println(n.test(p));
 	}
 	
@@ -82,23 +89,23 @@ public class NeuralNetDriver {
 	}
 
 	public static void main(String[] args) {
-		try {
+//		try {
 			NeuralNetDriver d = new NeuralNetDriver();
-//			d.test3();
-			ArrayList<Point> data= d.readTrainingData("trainSet_data/trainSet_05.dat");
-			Point p = data.get(0);
-			int [] lengths = d.readLengths(p.getCassificationLength());
-			System.out.println("Initalizing Neural Net...");
-			NeuralNet net = new NeuralNet(p.getDataLength(), lengths, data);
-			System.out.println("Train Neural Net...");
-			net.backPropLearning();
-			System.out.println("Test Neural Net...");
-			System.out.printf("Accuracy: %f",net.testData());
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+			d.testrun3();
+//			ArrayList<Point> data= d.readTrainingData("trainSet_data/trainSet_05.dat");
+//			Point p = data.get(0);
+//			int [] lengths = d.readLengths(p.getCassificationLength());
+//			System.out.println("Initalizing Neural Net...");
+//			NeuralNet net = new NeuralNet(p.getDataLength(), lengths, data);
+//			System.out.println("Train Neural Net...");
+//			net.backPropLearning();
+//			System.out.println("Test Neural Net...");
+//			System.out.printf("Accuracy: %f",net.testData());
+//			
+//			
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}		
 	}
 
 }

@@ -39,13 +39,12 @@ public class Perceptron {
 		}
 //		System.out.println("\n"+out);
 		out = 1 / (1+Math.pow(Math.E, -out));
-		
 		output = out;
 		return out;
 	}
 	
-	/* Updates weights based on the error their output had
-	 * @
+	/* Updates weights based on the error in output 
+	 * @param e - double indicating the amout of error that the out put had
 	 */
 	public void updateWeights(double e) {
 		error = e;

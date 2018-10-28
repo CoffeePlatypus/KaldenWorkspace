@@ -4,6 +4,10 @@ public class Layer {
 	private double [] output;
 	private double [] errors;
 	
+	/* Constructs a layer of perceptrons
+	 * @param inputLen - length that perceptrons should expect their inputs to be
+	 * @param outputLen - length of output that the layer generates - aka number of perceptrons in layer
+	 */
 	public Layer(int inputLen, int outputLen) {
 		perceptrons = new Perceptron[outputLen];
 		for(int i = 0; i<outputLen; i++) {
@@ -32,8 +36,12 @@ public class Layer {
 		return output;
 	}
 	
+	/* Calculates the output of a layer with a given input
+	 * @param input - the input the layer was given
+	 * @return the output of the layer
+	 */
 	public double[] calculateOutput(double [] input) {
-		if(perceptrons == null) return output;
+		if(perceptrons == null) return output; // This shouldnt happen
 		
 		for(int i = 0; i < perceptrons.length; i++) {
 			output[i] = perceptrons[i].calculateOutput(input);
@@ -41,6 +49,10 @@ public class Layer {
 		return output;
 	}
 	
+	/* Calculates the error made in the output layer
+	 * @param c - what the output layer should have output
+	 * @return double that is the largest error that this layer made
+	 */
 	public double calcuateOutputError(double [] c) {
 		System.out.print("Error : ");
 		double maxError = Math.abs(c[0] - output[0]);
@@ -55,24 +67,21 @@ public class Layer {
 		return maxError;
 	}
 	
-	public double calculateHiddenError(double [] plError) {
-		double maxError = 0;
-		for(int j = 0; j<plError.length; j++) {
-			errors[0] += output[0] * plError[j];
-		}
-		maxError = errors[0];
-		for(int i  = 1; i<errors.length; i++) {
+	/* Calculates the error of a hidden layer 
+	 * @param plError - the error that layer below this layer had
+	 */
+	public void calculateHiddenError(double [] plError) {
+		for(int i  = 0; i<errors.length; i++) {
 			errors[i] = 0;
 			for(int j = 0; j<plError.length; j++) {
 				errors[i] += output[i] * plError[j];
 			}
-			if(errors[i] > maxError) {
-				maxError = errors[i];
-			}
 		}
-		return maxError;
 	}
 	
+	/* Updates the weights of all the perceptrons in the layer
+	 * @pre - requires that the error has already been calculated
+	 */
 	public void updateWeights() {
 		for(int i = 0; i<perceptrons.length; i++) {
 			perceptrons[i].updateWeights(errors[i]);
