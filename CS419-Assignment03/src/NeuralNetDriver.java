@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -29,8 +30,8 @@ public class NeuralNetDriver {
 	
 	public Point stringToPoint(String line) {
 		String [] split = line.split("\\) \\(");
-		String [] d = split[0].substring(1, split[0].length()-1).split(" ");
-		String [] c = split[1].substring(0, split[1].length()-2).split(" ");
+		String [] d = split[0].substring(1, split[0].length()).split(" ");
+		String [] c = split[1].substring(0, split[1].length()-1).split(" ");
 		return new Point(mapStringToDouble(d),mapStringToDouble(c));
 	}
 	
@@ -89,23 +90,22 @@ public class NeuralNetDriver {
 	}
 
 	public static void main(String[] args) {
-//		try {
+		try {
 			NeuralNetDriver d = new NeuralNetDriver();
-			d.testrun3();
-//			ArrayList<Point> data= d.readTrainingData("trainSet_data/trainSet_05.dat");
-//			Point p = data.get(0);
-//			int [] lengths = d.readLengths(p.getCassificationLength());
-//			System.out.println("Initalizing Neural Net...");
-//			NeuralNet net = new NeuralNet(p.getDataLength(), lengths, data);
-//			System.out.println("Train Neural Net...");
-//			net.backPropLearning();
-//			System.out.println("Test Neural Net...");
-//			System.out.printf("Accuracy: %f",net.testData());
-//			
-//			
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}		
+//			d.testrun3();
+			ArrayList<Point> data= d.readTrainingData("trainSet_data/trainSet_05.dat");
+			Point p = data.get(0);
+			int [] lengths = d.readLengths(p.getCassificationLength());
+			System.out.println("Initalizing Neural Net...");
+			NeuralNet net = new NeuralNet(p.getDataLength(), lengths, data);
+			System.out.println("Train Neural Net...");
+			net.backPropLearning();
+			System.out.println("Test Neural Net...");
+			System.out.printf("Accuracy: %f",net.testData());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 
 }

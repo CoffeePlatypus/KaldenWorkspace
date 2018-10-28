@@ -32,7 +32,7 @@ public class Point {
 	public int getClassificationIndex() {
 		for(int i = 0; i<classification.length; i++) {
 			if(classification[i] == 1) {
-				return 1;
+				return i;
 			}
 		}
 		return -1;

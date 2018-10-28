@@ -46,7 +46,7 @@ public class NeuralNet {
 				l.updateWeights();
 				if (debug) System.out.println("--updated--\n"+l);
 			}
-			System.out.printf("Iteration [%d] Max Errror: %f\n", j,maxError);
+			if (j%10==0) System.out.printf("Iteration [%d] Max Errror: %f\n", j,maxError);
 			if(maxError < .01 ) {
 				return;
 			}
@@ -54,17 +54,17 @@ public class NeuralNet {
 	}
 	
 	private boolean testPoint(Point p) {
-		System.out.println(p);
+		//System.out.println("Input Point: "+p);
 		net[0].calculateOutput(p.getData());
-		System.out.println("Ouput layer 1 "+net[0]);
+		//System.out.println("Ouput layer [0]\n"+net[0]);
 		for(int i = 1; i<net.length; i++) {
 			Layer l = net[i];
-			System.out.println(l);
+			//System.out.printf("Output layer [%d]\n%s\n",i,l);
 			l.calculateOutput(net[i-1].getOutput());
 		}
 //		net[net.length-1].calculateOutput(net[net.length-2].getOutput());
 		double [] output = net[net.length-1].getOutput();
-		System.out.println(Arrays.toString(output));
+		//System.out.println(Arrays.toString(output));
 		double max = output [0];
 		int index = 0;
 		for(int i = 0; i<output.length; i++) {
@@ -73,26 +73,25 @@ public class NeuralNet {
 				index = i;
 			}
 		}
-		System.out.println(max+" : "+index);
+		//System.out.println(max+" : "+index);
 		return p.getClassification()[index] == 1.0;
 	}
 	
 	public double testData() {
-		System.out.println("Test Data...");
+		int [] stats = new int[net[net.length-1].getOutputLength()];
 		double correctCount = 0.0;
-		for(int i = 0; i<2; i++) {
+		for(int i = 0; i<examples.size(); i++) {
 			Point p = examples.get(i);
+			stats[p.getClassificationIndex()]++;
 			if(testPoint(p)) {
-				System.out.println("correct");
 				correctCount++;
-			}else {
-				System.out.println("incorrect");
 			}
+			//System.out.println("================================");
 		}
+		System.out.println("Data stats: "+Arrays.toString(stats));
+		System.out.println("Accuracy: "+correctCount/examples.size()*100+"%");
 		
-		System.out.println("Accuracy: "+correctCount/examples.size());
-		
-		return (correctCount/examples.size())*10;
+		return (correctCount/examples.size())*100;
 	}
 
 }

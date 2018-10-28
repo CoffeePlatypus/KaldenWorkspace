@@ -54,16 +54,16 @@ public class Layer {
 	 * @return double that is the largest error that this layer made
 	 */
 	public double calcuateOutputError(double [] c) {
-		System.out.print("Error : ");
+//		System.out.print("Error : ");
 		double maxError = Math.abs(c[0] - output[0]);
 		for(int i = 0; i<output.length; i++) {
 			errors[i] = c[i] - output[i];
-			System.out.print(errors[i]+" ");
+//			System.out.print(errors[i]+" ");
 			if(Math.abs(errors[i]) > maxError) {
 				maxError = Math.abs(errors[i]);
 			}
 		}
-		System.out.println();
+//		System.out.println();
 		return maxError;
 	}
 	
