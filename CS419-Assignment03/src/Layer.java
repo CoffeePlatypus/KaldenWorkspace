@@ -22,6 +22,7 @@ public class Layer {
 	public Layer (double [] o) { 
 		output = o;
 		perceptrons = null;
+		errors = null;
 	}
 	
 	public int getOutputLength() {
@@ -53,7 +54,7 @@ public class Layer {
 	 * @param c - what the output layer should have output
 	 * @return double that is the largest error that this layer made
 	 */
-	public double calcuateOutputError(double [] c) {
+	public double calcuateOutputError(int [] c) {
 //		System.out.print("Error : ");
 		double maxError = Math.abs(c[0] - output[0]);
 		for(int i = 0; i<output.length; i++) {
@@ -84,6 +85,7 @@ public class Layer {
 	 */
 	public void updateWeights() {
 		for(int i = 0; i<perceptrons.length; i++) {
+			
 			perceptrons[i].updateWeights(errors[i]);
 		}
 	}

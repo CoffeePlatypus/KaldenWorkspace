@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
 public class Point {
-	double [] classification;
+	int [] classification;
 	double [] data;
 	
-	public Point(double [] d, double [] c) {
+	public Point(double [] d, int [] c) {
 		data = d;
 		classification = c;
 	}
@@ -13,7 +13,7 @@ public class Point {
 		return data;
 	}
 	
-	public double [] getClassification() {
+	public int [] getClassification() {
 		return classification;
 	}
 	
