@@ -85,7 +85,6 @@ public class Layer {
 	 */
 	public void updateWeights() {
 		for(int i = 0; i<perceptrons.length; i++) {
-			
 			perceptrons[i].updateWeights(errors[i]);
 		}
 	}
@@ -95,6 +94,14 @@ public class Layer {
 		if(perceptrons == null) return s;
 		for(int i = 0; i<perceptrons.length; i++) {
 			s+= "\tperceptron - "+i+"\n"+perceptrons[i] +"\n\n";
+		}
+		return s;
+	}
+	
+	public String write() {
+		String s = perceptrons.length+"\n";
+		for(int i = 0; i <perceptrons.length; i++) {
+			s += perceptrons[i].write()+"\n";
 		}
 		return s;
 	}

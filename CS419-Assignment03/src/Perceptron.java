@@ -61,4 +61,14 @@ public class Perceptron {
 		}
 		return s+"\n\toutput: "+output+"\n\terror: "+error;
 	}
+	
+	/* Returns a string for writing the perceptron to a file
+	 */
+	public String write() {
+		String s ="";
+		for(int i = 0; i<weights.length; i++) {
+			s+= weights[i] +" ";
+		}
+		return s;
+	}
 }
