@@ -1,10 +1,11 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class NeuralNetDriver {
@@ -12,7 +13,7 @@ public class NeuralNetDriver {
 	public NeuralNetDriver() {
 	}
 	
-	public ArrayList<Point> readTrainingData(String path) throws IOException {
+	public ArrayList<Point> readData(String path) throws IOException {
 		BufferedReader rin = new BufferedReader(new FileReader(path));
 		ArrayList<Point> dataPoints = new ArrayList<Point>();
 		String line = rin.readLine();
@@ -20,7 +21,7 @@ public class NeuralNetDriver {
 			if(line.charAt(0) != '#') {
 				dataPoints.add(stringToPoint(line));
 			}else {
-				System.out.println(line);
+//				System.out.println(line);
 			}
 			line = rin.readLine();
 		}
@@ -40,7 +41,7 @@ public class NeuralNetDriver {
 		for(int i = 0; i<s.length; i++) {
 			double x = Double.parseDouble(s[i]);
 			//TODO maybe remove this
-			d[i] = (x < 1? 0 : x)/255;
+			d[i] = (x < 1? x : x/255);
 		}
 		return d;
 	}
@@ -61,8 +62,8 @@ public class NeuralNetDriver {
 		ArrayList<Point> l = new ArrayList<Point>(); 
 		l.add(p);
 		
-		NeuralNet n = new NeuralNet( lens,l);
-		n.backPropLearning();
+		NeuralNet n = new NeuralNet( lens);
+		n.backPropLearning(l);
 	}
 	
 	public void testrun3() {
@@ -79,14 +80,13 @@ public class NeuralNetDriver {
 		l.add(p1);
 		l.add(p2);
 		
-		NeuralNet n = new NeuralNet( lens, l);
-		n.backPropLearning();
-		n.testData();
+		NeuralNet n = new NeuralNet( lens);
+		n.backPropLearning(l);
+		n.testData(l);
 //		System.out.println(n.test(p));
 	}
 	
-	public int[] readLengths(int inputLength, int outputLength) {
-		Scanner scan = new Scanner(System.in);
+	public int[] readLengths(int inputLength, int outputLength, Scanner scan) {
 		System.out.println("Enter number of hidden layers < 10: ");
 		int size = scan.nextInt();
 		int [] layerLengths = new int [size+2];
@@ -96,26 +96,74 @@ public class NeuralNetDriver {
 			layerLengths[i] = scan.nextInt(); 
 		}
 		layerLengths[size+1] = outputLength;
-		scan.close();
 		return layerLengths;
 	}
+	
+	public void write(String name, NeuralNet n) throws IOException {
+		BufferedWriter wout = new BufferedWriter(new FileWriter("neuralNets/"+name));
+		wout.write(n.write());
+		wout.close();
+	}
+	
+	public NeuralNet load(String fname) throws NumberFormatException, IOException {
+		BufferedReader rin = new BufferedReader(new FileReader("neuralNets/"+fname));
+		int numLayers = Integer.parseInt(rin.readLine());
+		System.out.println("Num Layers: "+numLayers);
+		NeuralNet net = new NeuralNet(numLayers);
+		net.setLayer(0, new Perceptron[Integer.parseInt(rin.readLine())]);
+		for(int i = 1; i < numLayers; i++) {
+			int layerLength = Integer.parseInt(rin.readLine());
+			Perceptron [] perceptrons = new Perceptron[layerLength];
+			System.out.println(i + " : " + perceptrons.length);
+			for(int j = 0; j < layerLength; j++) {
+				
+				String line = rin.readLine();
+				System.out.println(line);
+				perceptrons[j] = new Perceptron(parseWeights(line.split(" ")));
+			}
+			net.setLayer(i, perceptrons);
+		}
+		rin.close();
+		return net;
+	}
+	
+	public double[] parseWeights(String [] w) {
+		double [] weights = new double[w.length];
+		for(int i = 0; i<w.length; i++) {
+			weights[i] = Double.parseDouble(w[i]);
+		}
+		return weights;
+	}
+	
+	public NeuralNet createAndTrain(Scanner scan) throws IOException {
+		ArrayList<Point> data = readData("trainSet_data/trainSet_05.dat");
+		Point p = data.get(0);
+		int [] lengths = readLengths(p.getDataLength(), p.getCassificationLength(), scan);
+		System.out.println("Initalizing Neural Net...");
+		NeuralNet net = new NeuralNet( lengths);
+		System.out.println("Train Neural Net...");
+		net.backPropLearning(data);
+		return net;
+	}
+	
 
 	public static void main(String[] args) {
 		try {
 			NeuralNetDriver d = new NeuralNetDriver();
 			
 //			d.testrun3();
+			Scanner scan = new Scanner(System.in);
+			NeuralNet net = d.createAndTrain(scan);
+//			NeuralNet net = d.load("net1.txt");
 			
-			ArrayList<Point> data= d.readTrainingData("trainSet_data/trainSet_05.dat");
-			Point p = data.get(0);
-			int [] lengths = d.readLengths(p.getDataLength(), p.getCassificationLength());
-			System.out.println("Initalizing Neural Net...");
-			NeuralNet net = new NeuralNet( lengths, data);
-			System.out.println("Train Neural Net...");
-			net.backPropLearning();
 			System.out.println("Test Neural Net...");
-			System.out.printf("Accuracy: %f",net.testData());
-			
+			ArrayList<Point> testData = d.readData("testSet_data/testSet_05.dat");
+			net.testData(testData);
+//			System.out.println("Save [Y|n]?");
+//			if(scan.next().equals("Y")) {
+//				d.write("net1.txt", net);
+//			}
+			System.out.println("Beep bloop bloop... \nGoodbye! \n: ]");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		

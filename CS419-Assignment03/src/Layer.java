@@ -3,6 +3,7 @@ public class Layer {
 	private Perceptron [] perceptrons;
 	private double [] output;
 	private double [] errors;
+	private double [] deltas;
 	
 	/* Constructs a layer of perceptrons
 	 * @param inputLen - length that perceptrons should expect their inputs to be
@@ -15,6 +16,7 @@ public class Layer {
 		}
 		output = new double[outputLen];
 		errors = new double[outputLen];
+		deltas = new double[outputLen];
 	}
 	
 	/* Constructor for first input layer?
@@ -23,6 +25,13 @@ public class Layer {
 		output = o;
 		perceptrons = null;
 		errors = null;
+	}
+	
+	public Layer(Perceptron [] p) {
+		perceptrons = p;
+		output = new double[p.length];
+		errors = new double[p.length];
+		deltas = new double[p.length];
 	}
 	
 	public int getOutputLength() {
@@ -35,6 +44,10 @@ public class Layer {
 	
 	public double[] getOutput() {
 		return output;
+	}
+	
+	public double[] getDeltas() {
+		return deltas;
 	}
 	
 	/* Calculates the output of a layer with a given input
@@ -59,6 +72,7 @@ public class Layer {
 		double maxError = Math.abs(c[0] - output[0]);
 		for(int i = 0; i<output.length; i++) {
 			errors[i] = c[i] - output[i];
+			deltas[i] = (output[i]) * (1-output[i]) * errors[i];
 //			System.out.print(errors[i]+" ");
 			if(Math.abs(errors[i]) > maxError) {
 				maxError = Math.abs(errors[i]);
@@ -71,21 +85,28 @@ public class Layer {
 	/* Calculates the error of a hidden layer 
 	 * @param plError - the error that layer below this layer had
 	 */
-	public void calculateHiddenError(double [] plError) {
+	public void calculateHiddenError(double [] previousLayerDelta) {
 		for(int i  = 0; i<errors.length; i++) {
 			errors[i] = 0;
-			for(int j = 0; j<plError.length; j++) {
-				errors[i] += output[i] * plError[j];
+			for(int j = 0; j<previousLayerDelta.length; j++) {
+				errors[i] += output[i] * previousLayerDelta[j];
 			}
+			deltas[i] = (output[i]) * (1-output[i]) * errors[i];
 		}
 	}
 	
 	/* Updates the weights of all the perceptrons in the layer
 	 * @pre - requires that the error has already been calculated
 	 */
-	public void updateWeights() {
+//	public void updateWeights() {
+//		for(int i = 0; i<perceptrons.length; i++) {
+//			perceptrons[i].updateWeights(errors[i]);
+//		}
+//	}
+	
+	public void deltaUpdateWeights(double [] input) {
 		for(int i = 0; i<perceptrons.length; i++) {
-			perceptrons[i].updateWeights(errors[i]);
+			perceptrons[i].deltaUpdateWeights(deltas[i], input);
 		}
 	}
 	

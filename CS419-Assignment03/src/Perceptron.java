@@ -1,9 +1,6 @@
 
 public class Perceptron {
 	double [] weights;
-	double [] input;
-	double output;
-	double error;
 	
 	/* Constructs a perceptron object
 	 * @param inputLen - int indicating the length of input that the perceptron will take 
@@ -11,8 +8,10 @@ public class Perceptron {
 	public Perceptron(int inputLen) {
 		weights = new double[inputLen+1];
 		setRandomWeights();
-		output = -1;
-		error = 0;
+	}
+	
+	public Perceptron(double [] w) {
+		weights = w;
 	}
 	
 	/* Initializes the weights to a random number in [0,1]
@@ -28,29 +27,34 @@ public class Perceptron {
 	 * @return double that is the output of the perceptron 
 	 */
 	public double calculateOutput(double [] in) {
-		input = in;
 		if(in.length + 1 != weights.length) {
 			System.out.print("input and weights dim mismatch");
 		}
 		double out = weights[0];
 		for(int i = 1; i < weights.length && i<=in.length; i++) {
 			out += weights[i] * in[i-1];
-			
 		}
 //		System.out.println("\n"+out);
 		out = 1 / (1+Math.pow(Math.E, -out));
-		output = out;
 		return out;
 	}
 	
 	/* Updates weights based on the error in output 
 	 * @param e - double indicating the amout of error that the out put had
 	 */
-	public void updateWeights(double e) {
-		error = e;
-		weights[0] += error * output*(1-output);
+//	public void updateWeights(double e) {
+//		error = e;
+//		weights[0] += error * output*(1-output);
+//		for(int i = 1; i<weights.length; i++) {
+//			weights[i] +=  error * output * (1 - output)*(input[i-1]);
+//		}
+//	}
+	
+	public void deltaUpdateWeights(double delta, double [] input) {
+//		System.out.println("Delta: "+delta);
+		weights[0] += delta;
 		for(int i = 1; i<weights.length; i++) {
-			weights[i] +=  error * output * (1 - output)*(input[i-1]);
+			weights[i] += delta * input[i-1];
 		}
 	}
 	
@@ -59,7 +63,7 @@ public class Perceptron {
 		for(int i = 0; i<weights.length; i++) {
 			s+= weights[i]+" ";
 		}
-		return s+"\n\toutput: "+output+"\n\terror: "+error;
+		return s;
 	}
 	
 	/* Returns a string for writing the perceptron to a file
