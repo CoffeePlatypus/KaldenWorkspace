@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class NeuralNetDriver {
@@ -41,7 +42,7 @@ public class NeuralNetDriver {
 		for(int i = 0; i<s.length; i++) {
 			double x = Double.parseDouble(s[i]);
 			//TODO maybe remove this
-			d[i] = (x < 1? x : x/255);
+			d[i] = (x < 1? 0 : x/255);
 		}
 		return d;
 	}
@@ -62,7 +63,7 @@ public class NeuralNetDriver {
 		ArrayList<Point> l = new ArrayList<Point>(); 
 		l.add(p);
 		
-		NeuralNet n = new NeuralNet( lens);
+		NeuralNet n = new NeuralNet( lens , 0);
 		n.backPropLearning(l);
 	}
 	
@@ -79,8 +80,7 @@ public class NeuralNetDriver {
 		ArrayList<Point> l = new ArrayList<Point>();
 		l.add(p1);
 		l.add(p2);
-		
-		NeuralNet n = new NeuralNet( lens);
+		NeuralNet n = new NeuralNet( lens, 0);
 		n.backPropLearning(l);
 		n.testData(l);
 //		System.out.println(n.test(p));
@@ -107,9 +107,11 @@ public class NeuralNetDriver {
 	
 	public NeuralNet load(String fname) throws NumberFormatException, IOException {
 		BufferedReader rin = new BufferedReader(new FileReader("neuralNets/"+fname));
+		int res = Integer.parseInt(rin.readLine());
+		System.out.println("Resolution: "+res);
 		int numLayers = Integer.parseInt(rin.readLine());
 		System.out.println("Num Layers: "+numLayers);
-		NeuralNet net = new NeuralNet(numLayers);
+		NeuralNet net = new NeuralNet(numLayers, res);
 		net.setLayer(0, new Perceptron[Integer.parseInt(rin.readLine())]);
 		for(int i = 1; i < numLayers; i++) {
 			int layerLength = Integer.parseInt(rin.readLine());
@@ -135,35 +137,73 @@ public class NeuralNetDriver {
 		return weights;
 	}
 	
-	public NeuralNet createAndTrain(Scanner scan) throws IOException {
-		ArrayList<Point> data = readData("trainSet_data/trainSet_05.dat");
+	public NeuralNet createAndTrain(Scanner scan, int res) throws IOException {
+		ArrayList<Point> data = readData("trainSet_data/trainSet_"+(res==5?"0"+res:res)+".dat");
+		data = filterData(15, data);
 		Point p = data.get(0);
 		int [] lengths = readLengths(p.getDataLength(), p.getCassificationLength(), scan);
 		System.out.println("Initalizing Neural Net...");
-		NeuralNet net = new NeuralNet( lengths);
+		NeuralNet net = new NeuralNet(lengths,res);
 		System.out.println("Train Neural Net...");
 		net.backPropLearning(data);
 		return net;
+	}
+	
+	public ArrayList<Point> filterData(int limit, ArrayList<Point> data) {
+		Collections.shuffle(data);
+		int [] classes = new int[data.get(0).getCassificationLength()];
+		ArrayList<Point> dat = new ArrayList<Point>();
+		data.forEach((point) -> { int c = point.getClassificationIndex();
+									if(classes[c] < limit ) {
+										classes[c]++;
+										dat.add(point);
+									}});
+		System.out.println("Adj dis: "+Arrays.toString(classes));
+		return dat;
 	}
 	
 
 	public static void main(String[] args) {
 		try {
 			NeuralNetDriver d = new NeuralNetDriver();
-			
-//			d.testrun3();
 			Scanner scan = new Scanner(System.in);
-			NeuralNet net = d.createAndTrain(scan);
-//			NeuralNet net = d.load("net1.txt");
+//			d.testrun3();
 			
-			System.out.println("Test Neural Net...");
-			ArrayList<Point> testData = d.readData("testSet_data/testSet_05.dat");
-			net.testData(testData);
-//			System.out.println("Save [Y|n]?");
-//			if(scan.next().equals("Y")) {
-//				d.write("net1.txt", net);
-//			}
-			System.out.println("Beep bloop bloop... \nGoodbye! \n: ]");
+			int res = 0;
+			System.out.println("Choose: \n\t-[T] : train\n\t-[L] : load\n\t-[Q] : quit");
+			String choice = scan.next();
+			while(!choice.equalsIgnoreCase("Q")) {
+				NeuralNet net = null;
+				if(choice.equalsIgnoreCase("T")) {
+					System.out.println("Enter Resolution: ");
+					res = Integer.parseInt(scan.next());
+					if(res%5 == 0 && res > 4 && res <21) {
+						net = d.createAndTrain(scan,res);
+					}else {
+						System.out.println("Invalid resolution");
+					}
+				}else if(choice.equalsIgnoreCase("L")) {
+					System.out.println("Enter file name");
+					String fname = scan.next();
+					net = d.load(fname);
+				}
+				if(net != null) {
+					System.out.println("Test Neural Net...");
+					ArrayList<Point> testData = d.readData("testSet_data/testSet_" +net.getRes()+".dat");
+					net.testData(testData);
+					if(choice.equalsIgnoreCase("T") ) {
+						System.out.println("Save [Y|n]?");
+						if(scan.next().equals("Y")) {
+							System.out.println("Enter Name:");
+							d.write(scan.next(), net);
+						}
+					}
+				}
+				System.out.println("Choose: \n\t-[T] : train\n\t-[L] : load\n\t-[Q] : quit");
+				choice = scan.next();
+			}	
+			
+			System.out.println("Beep blop bloop... \nGoodbye! \n: ]");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		

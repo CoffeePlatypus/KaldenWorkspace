@@ -4,8 +4,10 @@ import java.util.Arrays;
 public class NeuralNet {
 	private Layer[] net;
 	private boolean debug = false;
+	private int res;
 
-	public NeuralNet(int[] layerLens) {
+	public NeuralNet(int[] layerLens, int r) {
+		res = r;
 		net = new Layer[layerLens.length];
 		net[0] = new Layer(new double[layerLens[0]]);
 		for (int i = 1; i < layerLens.length; i++) {
@@ -17,8 +19,13 @@ public class NeuralNet {
 		}
 	}
 	
-	public NeuralNet(int numLayers) {
+	public NeuralNet(int numLayers, int r) {
+		res = r;
 		net = new Layer[numLayers];
+	}
+	
+	public String getRes() {
+		return res == 5 ? "0"+res : res+"";
 	}
 	
 	public void setLayer(int i, Perceptron [] p) {
@@ -80,7 +87,7 @@ public class NeuralNet {
 //			System.out.printf("Output layer [%d] : %s\n",i,Arrays.toString(l.getOutput()));
 		}
 		double[] output = net[net.length - 1].getOutput();
-		System.out.println("Output: " + Arrays.toString(output));
+		System.out.println(p.getClassificationIndex()+ " : Output: " + Arrays.toString(output));
 		double max = output[0];
 		int index = 0;
 		for (int i = 0; i < output.length; i++) {
@@ -124,7 +131,7 @@ public class NeuralNet {
 	}
 	
 	public String write() {
-		String s = net.length+"\n"+net[0].getOutputLength()+"\n";
+		String s = res+"\n"+net.length+"\n"+net[0].getOutputLength()+"\n";
 		 for(int i = 1; i<net.length; i++) {
 			 s += net[i].write();
 		 }
