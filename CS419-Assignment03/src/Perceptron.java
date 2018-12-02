@@ -58,6 +58,14 @@ public class Perceptron {
 		}
 	}
 	
+	public double findDelta(double [] deltaj, double output) {
+		double del = weights[0];
+		for(int i = 1; i<weights.length; i++) {
+			del += weights[i] * deltaj[i-1]; 
+		}
+		return output * (1-output) * del;
+	}
+	
 	public String toString() {
 		String s = "\tweights: " ;
 		for(int i = 0; i<weights.length; i++) {

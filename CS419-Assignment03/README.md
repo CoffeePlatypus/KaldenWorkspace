@@ -6,6 +6,8 @@ Julia Froegel
 
 ###Description###
 A neural net that learns to classify data
+My highest average accuracy is 20.5% accuracy 
+One time I had 39% accuracy testing and training on trainingSet_05.dat with 2 hidden layers of length 5 but I have 'fixed' things since then and been unable replicate this since. 
 
 ###Language###
 Java 10

@@ -19,7 +19,7 @@ public class Layer {
 		deltas = new double[outputLen];
 	}
 	
-	/* Constructor for first input layer?
+	/* Constructor for first input layer
 	 */
 	public Layer (double [] o) { 
 		output = o;
@@ -27,6 +27,8 @@ public class Layer {
 		errors = null;
 	}
 	
+	/* Constructor for read in Layer
+	 */
 	public Layer(Perceptron [] p) {
 		perceptrons = p;
 		output = new double[p.length];

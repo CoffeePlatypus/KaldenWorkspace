@@ -6,6 +6,8 @@ public class NeuralNet {
 	private boolean debug = false;
 	private int res;
 
+	/* Neural net constructor
+	 */
 	public NeuralNet(int[] layerLens, int r) {
 		res = r;
 		net = new Layer[layerLens.length];
@@ -19,6 +21,8 @@ public class NeuralNet {
 		}
 	}
 	
+	/* Neural net constructor for loading neural net
+	 */
 	public NeuralNet(int numLayers, int r) {
 		res = r;
 		net = new Layer[numLayers];
@@ -67,14 +71,10 @@ public class NeuralNet {
 				if (debug)
 					System.out.println("--updated--\n" + l);
 			}
-//			if (j % 215 == 1 || j%215 ==5)
-//				System.out.printf("Iteration [%d][%d] Max Errror: %f - %d\n", j%examples.size(), j, maxError,
-//						point.getClassificationIndex());
 			if (maxError < .01) {
 				return;
 			}
 		}
-
 	}
 
 	private int testPoint(Point p) {
@@ -87,7 +87,7 @@ public class NeuralNet {
 //			System.out.printf("Output layer [%d] : %s\n",i,Arrays.toString(l.getOutput()));
 		}
 		double[] output = net[net.length - 1].getOutput();
-		System.out.println(p.getClassificationIndex()+ " : Output: " + Arrays.toString(output));
+//		System.out.println(p.getClassificationIndex()+ " : Output: " + Arrays.toString(output));
 		double max = output[0];
 		int index = 0;
 		for (int i = 0; i < output.length; i++) {
@@ -96,8 +96,6 @@ public class NeuralNet {
 				index = i;
 			}
 		}
-//		System.out.println(max+" : "+index);
-//		return p.getClassification()[index] == 1.0
 		return index;
 	}
 

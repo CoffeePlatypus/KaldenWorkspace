@@ -42,7 +42,7 @@ public class NeuralNetDriver {
 		for(int i = 0; i<s.length; i++) {
 			double x = Double.parseDouble(s[i]);
 			//TODO maybe remove this
-			d[i] = (x < 1? 0 : x/255);
+			d[i] = (x < 1? x : x/255);
 		}
 		return d;
 	}
@@ -92,7 +92,7 @@ public class NeuralNetDriver {
 		int [] layerLengths = new int [size+2];
 		layerLengths[0] = inputLength;
 		for(int i = 1; i<size+1; i++) {
-			System.out.printf("Enter size of layer[%d]: \n", i);
+			System.out.printf("Enter size (<500) of layer[%d]: \n", i);
 			layerLengths[i] = scan.nextInt(); 
 		}
 		layerLengths[size+1] = outputLength;
@@ -139,7 +139,7 @@ public class NeuralNetDriver {
 	
 	public NeuralNet createAndTrain(Scanner scan, int res) throws IOException {
 		ArrayList<Point> data = readData("trainSet_data/trainSet_"+(res==5?"0"+res:res)+".dat");
-		data = filterData(15, data);
+//		data = filterData(15, data);
 		Point p = data.get(0);
 		int [] lengths = readLengths(p.getDataLength(), p.getCassificationLength(), scan);
 		System.out.println("Initalizing Neural Net...");
