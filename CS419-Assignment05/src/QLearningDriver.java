@@ -20,10 +20,12 @@ public class QLearningDriver {
 	public static void main(String[] args) {
 		try  {
 			QLearningDriver driver = new QLearningDriver();
+//			ArrayList<String[]> world = driver.readFile("smol_pipe.txt");
 			ArrayList<String[]> world = driver.readFile("pipe_world.txt");
 			//world.stream().forEach((line)->{System.out.println(Arrays.toString(line));});
 			QLearning learner = new QLearning(world);
 			learner.qlearn();
+//			learner.featLearn();
 		}catch (IOException e) {
 			System.out.println("File Problem");
 		}
