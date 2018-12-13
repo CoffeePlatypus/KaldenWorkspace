@@ -12,7 +12,6 @@ public class QLearning {
 	private int [][] reward;
 	private double [][][] sa;
 	private int [] goal;
-	private boolean rando = true;
 
 	public QLearning(ArrayList<String[]> w) {
 		start = new int[2];
@@ -55,49 +54,11 @@ public class QLearning {
 	 * 	  * reward of state <i, j> is reward[i][j] 	
 	 */
 	
-	public void featLearn() {
-		double w1 = 1;
-		double w2 = 1;
+	public int[] takeAction(int[] s, int action) {
 		int [] state = new int[2];
-		for(int episode = 0; episode < 1; episode++) {
-			state[0] = start[0];
-			state[1] = start[1];
-			for(int time = 0; time < 10 ; time++) {
-				System.out.println("State "+state[0]+" "+state[1] );
-				int [] sprime = takeAction(state, LEFT);
-				System.out.println("prime "+sprime[0]+" "+sprime[1] );
-				double down = w1 * f1goal(takeAction(state,DOWN)) + w2 * f2mines(takeAction(state, DOWN), DOWN);
-				double up =  w1 * f1goal(takeAction(state,UP)) + w2 * f2mines(takeAction(state, UP), UP);
-				double left =  w1 * f1goal(takeAction(state,LEFT)) + w2 * f2mines(takeAction(state, LEFT), LEFT);
-				double right =  w1 * f1goal(takeAction(state,RIGHT)) + w2 * f2mines(takeAction(state, RIGHT), RIGHT);
-				
-				System.out.println("Down : "+down);
-				System.out.println("UP : "+up);
-				System.out.println("Left : "+left);
-				System.out.println("Right : "+right);
-				System.out.println();
-				state = takeAction(state, DOWN);
-			}
-		}	
-	}
-	
-	public double f1goal(int [] state) {
-		return (Math.abs(goal[0] - state[0]) + Math.abs(goal[1] - state[1])) / (double) goal[0] + goal[1];
-	}
-	
-	public double f2mines(int[] state, int action) {
-		 if(action == LEFT) {
-			 System.out.println(state[1]);
-			 return 1/state[1];
-		 }else if(action == RIGHT) {
-			 return 1/reward.length - state[1];
-		 }else {
-			 return (1/state[1]) > (1/reward.length - state[1]) ? 1/reward.length - state[1] : 1/state[1];
-		 }
-	}
-	
-	public int[] takeAction(int[] state, int action) {
-		boolean slipped = Math.random() < .2;
+		state[0] = s[0];
+		state[1] = s[1];
+		boolean slipped = false && Math.random() < .2;
 		switch(action) {
 		case UP :
 			if(state[0] > 0) {
@@ -136,7 +97,7 @@ public class QLearning {
 			}
 			break;
 		case RIGHT : 
-			if(state[1] > reward[0].length -1) {
+			if(state[1] < reward[0].length -1) {
 				state[1]++;
 			}
 			if(slipped) {
@@ -186,27 +147,31 @@ public class QLearning {
 		state[0] = start[0];
 		state[1] = start[1];
 		// for time step t < matrix width * height
-		for(int time = 0; time< (reward.length * reward[0].length); time++ ) {
-//			System.out.println(state[0]+" " +state[1]);
+		for(int time = 0; time < (reward.length * reward[0].length); time++ ) {
+//			System.out.println("State: "+state[0]+" " +state[1]);
 			if(atMine(state) || atGoal(state)) {
 				return;
 			}
 			int action;
-			if( rando && Math.random() <= epi) {
+			if(Math.random() <= epi) {
 				action = (int)(Math.random() * 4);
 			}else {
 				action = getMaxActionIndex(state);
 			}
 			int [] primestate = new int[2];
 			primestate = takeAction(state,action);
+//			System.out.println("\taction "+maxActionToChar(action));
+//			System.out.println("\tSprime: "+primestate[0]+" " +primestate[1]);
 			// sa = sa +alpha(reward + gamma*max(q', s') - sa)
-			sa[state[0]][state[1]][action] += lrate * (reward[primestate[0]][primestate[1]] + (.9) * getMaxAction(primestate) - sa[state[0]][state[1]][action]);
-			state = primestate;
+			sa[state[0]][state[1]][action] += lrate * (reward[primestate[0]][primestate[1]] + ((.9) * getMaxAction(primestate)) - sa[state[0]][state[1]][action]);
+//			getMaxAction(state);
+			state[0] = primestate[0];
+			state[1] = primestate[1];
 		}
 	}
 	
 	private void evalQLearn() {
-		int[] scores = new int[2];
+		int[] scores = new int[10];
 		for(int i = 0; i<scores.length; i++) {
 			int [] state = new int[2];
 			state[0] = start[0];
@@ -246,28 +211,18 @@ public class QLearning {
 		// up down left right
 		double max = sa[state[0]][state[1]][UP];
 		int index = UP;
-		//System.out.println(state[0]+", "+state[1]+" : "+ Arrays.toString(sa[state[0]][state[1]]));
+//		System.out.println(state[0]+", "+state[1]+" : "+ Arrays.toString(sa[state[0]][state[1]]));
 		for(int i = 1; i<4; i++) {
 			if(sa[state[0]][state[1]][i] > max) {
-				//System.out.println("new max" + max);
 				max = sa[state[0]][state[1]][i];
 				index = i;
 			}
 		}
-//		System.out.print("["+maxActionToChar(index)+ " : "+max+"] = "+Arrays.toString(sa[state[0]][state[1]])+",  ");
+		
 		return index;
 	}
 	
 	public double getMaxAction(int [] state) {
-//		double max = sa[state[0]][state[1]][UP];
-//		//System.out.println(state[0]+", "+state[1]+" : "+ Arrays.toString(sa[state[0]][state[1]]));
-//		for(int i = 1; i<4; i++) {
-//			if(sa[state[0]][state[1]][i] > max) {
-//				//System.out.println("new max" + max);
-//				max = sa[state[0]][state[1]][i];
-//			}
-//		}
-//		return max;
 		return sa[state[0]][state[1]][getMaxActionIndex(state)];
 	}
 	
@@ -290,16 +245,6 @@ public class QLearning {
 		}
 	}
 	
-	private void printSAPairs(int [] state) {
-		System.out.println(state[0]+" "+state[1]);
-		System.out.println("\tUP: "+sa[state[0]][state[1]][UP]);
-		System.out.println("\tDOWN: "+sa[state[0]][state[1]][DOWN]);
-		System.out.println("\tLEFT: "+sa[state[0]][state[1]][LEFT]);
-		System.out.println("\tRIGHT: "+sa[state[0]][state[1]][RIGHT]);
-		System.out.println("\tact sum "+getActionSum(state));
-		System.out.println("\tmax action index "+getMaxActionIndex(state)+"\n");
-	}
-	
 	public void printSA() {
 		for(int i = 0; i<sa.length; i++) {
 			for(int j = 0; j<sa[i].length; j++) {
@@ -311,14 +256,16 @@ public class QLearning {
 				}else if(atGoal(state)) {
 					System.out.print("G ");
 				}else {
-//					System.out.print(maxActionToChar(getMaxActionIndex(state))+" ");
+					System.out.print(maxActionToChar(getMaxActionIndex(state))+" ");
 //					System.out.print((int)getMaxAction(state) +" ");
 //					System.out.print(getMaxActionIndex(state)+" ");/
 //					printSAPairs(state);
-					System.out.print(Arrays.toString(sa[state[0]][state[1]]));
+//					System.out.print(Arrays.toString(sa[state[0]][state[1]]));
 				}
 			}
 			System.out.println();
 		}
 	}
+	
+
 }
