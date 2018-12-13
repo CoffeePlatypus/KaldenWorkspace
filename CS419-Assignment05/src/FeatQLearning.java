@@ -1,4 +1,6 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FeatQLearning {
 	
@@ -101,18 +103,18 @@ public class FeatQLearning {
 	}
 	
 	public void featLearn() {
-		w1 = 1;
-		w2 = 1;
+		w1 = 0;
+		w2 = 0;
 		
 		double episilon = 0.9;
 		double lrate = 0.9;
 		
-		for(int episode = 0; episode < 25; episode++) {
-			System.out.println("weights "+ w1 +" "+ w2);
+		for(int episode = 0; episode < 10000; episode++) {
+//			System.out.println("weights "+ w1 +" "+ w2);
 			featEpisode(episilon, lrate);
 			if(episode%100 == 0) {
 //				TODO eval policy
-
+				evalPolicy();
 			}
 			if(episode%200 == 0) {
 				episilon = 0.9/(((episode)/200.0) +1);
@@ -130,37 +132,88 @@ public class FeatQLearning {
 		int [] state = new int[2];
 		state[0] = start[0];
 		state[1] = start[1];
-		for(int time = 0; time < 10 ; time++) {
-			System.out.println("State "+state[0]+" "+state[1] );
-			int action = featBestAction(state);
+		// t 10 good
+//		int maxtime = 10;
+		int maxtime = (reward.length * reward[0].length);
+		for(int time = 0; time <  maxtime; time++) {
+			if(atMine(state) || atGoal(state)) {
+				return;
+			}
+			int action;
+			if(Math.random() <= episilon) {
+				action = (int)(Math.random() * 4);
+			}else {
+				action = featBestAction(state);
+			}
+//			System.out.println("\taction: "+action);
 			int [] sprime = takeAction(state[0], state[1], action);
+//			System.out.println("\t\tPrime State:" +sprime[0]+" "+sprime[1]);
+//			System.out.println("\t\t best action value "+featActionValue(sprime, featBestAction(sprime)));
 			double delta = reward[sprime[0]][sprime[1]] + (0.9 * featActionValue(sprime, featBestAction(sprime))) - featActionValue(state,action);
+//			
 			w1 += lrate * delta * f1goal(sprime);
 			w2 += lrate * delta * f2mines(state, action);
 			state = sprime;
 		}
 	}
 	
+	public void evalPolicy() {
+		int[] scores = new int[10];
+		for(int i = 0; i<scores.length; i++) {
+			int [] state = new int[2];
+			state[0] = start[0];
+			state[1] = start[1];
+			
+//			System.out.println("here: "+state[0]+" "+state[1]);
+			for(int time = 0; time< 1000; time++ ) {
+//				System.out.print(state[0]+" "+state[1]+" > ");
+				int action = featBestAction(state);			
+//				printSAPairs(state);
+				if(atMine(state)) {
+//					System.out.println("hit mine");
+					scores[i] -= 100;
+					break;
+				}else if(atGoal(state)) {
+//					System.out.println("got goal!!!!!!!!!!!!!!!!!!!");
+					break;
+				}else {
+					scores[i]--;
+				}
+				state = takeAction(state[0], state[1], action);
+			}
+//			System.out.println();
+		}
+		System.out.println("Eval: "+Arrays.toString(scores));
+	}
+	
 	public int featBestAction(int [] state) {
 //		int []
 		double min = featActionValue(state, UP);
-		int mindex = UP;
+//		System.out.println("\tval: "+min+ " action up");
+		int index = UP;
 		for(int action = 1; action<4; action++) {
 			double temp = featActionValue(state, action);
-			if(temp < min){
-				mindex = action;
+//			System.out.println("\tval: "+temp+ " action "+action);
+			if(temp > min){
+				index = action;
 				min = temp;
 			}
 		}
-		return mindex;
+		return index;
 	}
 	
 	public double featActionValue(int [] state, int action) {
-		return  w1 * f1goal(takeAction(state[0], state[1], action)) + w2 * f2mines(takeAction(state[0], state[1], action), action);
+		double f1 = f1goal(takeAction(state[0], state[1], action));
+		double f2 = f2mines(takeAction(state[0], state[1], action), action);
+//		System.out.println("\t\t\tf1 :"+f1);
+//		System.out.println("\t\t\tf2 :"+f2);
+//		System.out.println("\t\t\t1 :" +w1 * f1);
+//		System.out.println("\t\t\t2 :"+w2 * f2);
+		return  w1 * f1  + w2 * f2;
 	}
 	
 	public double f1goal(int [] state) {
-		return (Math.abs(goal[0] - state[0]) + Math.abs(goal[1] - state[1])) / (double) goal[0] + goal[1];
+		return (Math.abs(goal[0] - state[0]) + Math.abs(goal[1] - state[1])) / ((double) goal[0] + goal[1]);
 	}
 	
 	public double f2mines(int[] state, int action) {
@@ -169,9 +222,9 @@ public class FeatQLearning {
 		}else if(action == LEFT) {
 			 return 1/state[1];
 		 }else if(action == RIGHT) {
-			 return 1/reward.length - state[1];
+			 return 1/(reward.length - state[1]);
 		 }else {
-			 return (1/state[1]) > (1/reward.length - state[1]) ? 1/reward.length - state[1] : 1/state[1];
+			 return (1/state[1]) > (1/(reward.length - state[1])) ? 1/(reward.length - state[1]) : 1/state[1];
 		 }
 	}
 	
