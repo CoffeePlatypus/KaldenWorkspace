@@ -39,8 +39,11 @@ public class QLearning {
 //			System.out.println(Arrays.toString(reward[i]));
 			
 		}
+		System.out.println("#########################################################################");
+		System.out.println("Q Learning");
 		System.out.println("Start: "+ start[0]+" "+start[1]);
 		System.out.println("Dim  : "+w.size()+" x "+reward[0].length);
+		System.out.println("#########################################################################");
 	}
 	
 	/* MDP = < S, A, P, R, T>
@@ -58,7 +61,7 @@ public class QLearning {
 		int [] state = new int[2];
 		state[0] = s[0];
 		state[1] = s[1];
-		boolean slipped = false && Math.random() < .2;
+		boolean slipped = true && Math.random() < .2;
 		switch(action) {
 		case UP :
 			if(state[0] > 0) {
@@ -127,16 +130,15 @@ public class QLearning {
 		for(int episode = 0; episode < 10000; episode++  ) {			
 			runEpisode(episilon, lrate);
 			if(episode%100 == 0) {
-//				TODO eval policy
 				evalQLearn();
 			}
 			if(episode%200 == 0) {
 				episilon = 0.9/(((episode)/200.0) +1);
-				System.out.println("Episode "+episode+" - Epi: "+episilon);
+//				System.out.println("Episode "+episode+" - Epi: "+episilon);
 			}
 			if(episode%1000 == 0) {
 				lrate = 0.9/(((episode)/1000.0) +1);
-				System.out.println("Episode "+episode+" - lrate: "+lrate);
+//				System.out.println("Episode "+episode+" - lrate: "+lrate);
 			}
 		}
 		printSA();
@@ -171,16 +173,16 @@ public class QLearning {
 	}
 	
 	private void evalQLearn() {
-		int[] scores = new int[10];
+		int[] scores = new int[50];
+		int total = 0;
 		for(int i = 0; i<scores.length; i++) {
 			int [] state = new int[2];
 			state[0] = start[0];
 			state[1] = start[1];
 			
 //			System.out.println("here: "+state[0]+" "+state[1]);
-			for(int time = 0; time< 1000; time++ ) {
-//				System.out.print(state[0]+" "+state[1]+" > ");
-				int action = getMaxActionIndex(state);			
+			for(int time = 0; time< (reward.length * reward[0].length); time++ ) {
+//				System.out.print(state[0]+" "+state[1]+" > ");			
 //				printSAPairs(state);
 				if(atMine(state)) {
 //					System.out.println("hit mine");
@@ -189,14 +191,16 @@ public class QLearning {
 				}else if(atGoal(state)) {
 //					System.out.println("got goal!!!!!!!!!!!!!!!!!!!");
 					break;
-				}else {
-					scores[i]--;
 				}
+				scores[i]--;
+				int action = getMaxActionIndex(state);
 				state = takeAction(state, action);
+				
 			}
-//			System.out.println();
+			total += scores[i];
 		}
-		System.out.println("Eval: "+Arrays.toString(scores));
+//		System.out.println("Eval: "+Arrays.toString(scores));
+		System.out.println("avg: "+(total/scores.length));
 	}
 	
 	private boolean atGoal(int[] state) {
@@ -246,6 +250,9 @@ public class QLearning {
 	}
 	
 	public void printSA() {
+		System.out.println("#########################################################################");
+		System.out.println("Q Learning Policy");
+		System.out.println("#########################################################################");
 		for(int i = 0; i<sa.length; i++) {
 			for(int j = 0; j<sa[i].length; j++) {
 				int [] state = new int[2];
@@ -265,6 +272,7 @@ public class QLearning {
 			}
 			System.out.println();
 		}
+		System.out.println("#########################################################################\n");
 	}
 	
 

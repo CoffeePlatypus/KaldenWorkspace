@@ -24,8 +24,8 @@ public class QLearningDriver {
 			ArrayList<String[]> world = driver.readFile("pipe_world.txt");
 			//world.stream().forEach((line)->{System.out.println(Arrays.toString(line));});
 			QLearning learner = new QLearning(world);
+			learner.qlearn();
 			FeatQLearning len = new FeatQLearning(world);
-//			learner.qlearn();
 			len.featLearn();
 		}catch (IOException e) {
 			System.out.println("File Problem");
