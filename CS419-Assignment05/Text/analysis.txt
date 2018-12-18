@@ -1,0 +1,8 @@
+Q Learning Policy Analysis
+     My Q Learning policy is slightly different each time because the policy that it learns is dependent on randomness to explore. This means that each time it explores slightly different paths, and consequently some states are not visited much so their best actions do not get updated.
+
+Feature Q Learning Policy Analysis
+     My feature based Q Learning policy is different from the one that you showed in class. I think this is because of the order in which I break ties as I iterate to find the best possible action.
+
+Graph Analysis
+     Feature Q Learning jumps straight up the around the highest score possible at about -49. However, simple Q Leaning takes awhile to approach the best score possible, and often has random sudden spikes up or down. I think this is cause by hitting mines when it decides to move randomly to explore. Both learning policies seem to converge to about as good as eachother.

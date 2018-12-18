@@ -1,24 +1,22 @@
 CS419 - Machine Learning Assignment 05
 ======================================
 
-###Author###
+### Author ###
 Julia Froegel
 
-###Description###
+### Description ###
 Implemented Q Learning and Feature Q Learning in pipe_world.txt located at top level
 
-###Content###
+### Content ###
 - src
      - FeatQLearning.java
      - QLearning.java
      - QLearningDriver.jave
 - Text
-     - pol.txt
-          - learned policies
-     - analysis.txt
-          - analysis
+     - pol.txt : learned policies
+     - analysis.txt : analysis
 - LearningGraph.jpg
 - pipe_world.txt
 
-###Graph###
+### Graph ###
 ![Graph](LearningGraph.jpg)
