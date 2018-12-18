@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +15,10 @@ public class QLearning {
 	private double [][][] sa;
 	private int [] goal;
 
-	public QLearning(ArrayList<String[]> w) {
+	private BufferedWriter log;
+	
+	public QLearning(ArrayList<String[]> w, BufferedWriter l) {
+		log = l;
 		start = new int[2];
 		goal = new int[2];
 		reward = new int[w.size()][];
@@ -114,7 +119,7 @@ public class QLearning {
 		return state;
 	}
 	
-	public void qlearn() {
+	public void qlearn() throws IOException {
 		// for all states s and actions a sa = 0
 		for(int i = 0; i<sa.length; i++) {
 			for(int j = 0; j < sa[i].length; j++) {
@@ -172,7 +177,7 @@ public class QLearning {
 		}
 	}
 	
-	private void evalQLearn() {
+	private void evalQLearn() throws IOException {
 		int[] scores = new int[50];
 		int total = 0;
 		for(int i = 0; i<scores.length; i++) {
@@ -201,6 +206,7 @@ public class QLearning {
 		}
 //		System.out.println("Eval: "+Arrays.toString(scores));
 		System.out.println("avg: "+(total/scores.length));
+		log.write((total/scores.length)+", ");
 	}
 	
 	private boolean atGoal(int[] state) {
@@ -241,10 +247,10 @@ public class QLearning {
 	
 	private char maxActionToChar(int i) {
 		switch(i) {
-		case 0 : return '^';
-		case 1 : return 'v';
-		case 2 : return '<';
-		case 3 : return '>';
+		case 0 : return 'U';
+		case 1 : return 'D';
+		case 2 : return 'L';
+		case 3 : return 'R';
 		default : return 'U';
 		}
 	}
@@ -264,10 +270,7 @@ public class QLearning {
 					System.out.print("G ");
 				}else {
 					System.out.print(maxActionToChar(getMaxActionIndex(state))+" ");
-//					System.out.print((int)getMaxAction(state) +" ");
-//					System.out.print(getMaxActionIndex(state)+" ");/
-//					printSAPairs(state);
-//					System.out.print(Arrays.toString(sa[state[0]][state[1]]));
+
 				}
 			}
 			System.out.println();

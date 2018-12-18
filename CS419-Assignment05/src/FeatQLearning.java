@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +18,10 @@ public class FeatQLearning {
 	private double w1 = 1;
 	private double w2 = 1;
 	
-	public FeatQLearning(ArrayList<String[]> w) {
+	BufferedWriter log;
+	
+	public FeatQLearning(ArrayList<String[]> w, BufferedWriter l) {
+		log = l;
 		start = new int[2];
 		goal = new int[2];
 		reward = new int[w.size()][];
@@ -133,7 +138,7 @@ public class FeatQLearning {
 		return state;
 	}
 	
-	public void featLearn() {
+	public void featLearn() throws IOException {
 		w1 = 0;
 		w2 = 0;
 		
@@ -184,7 +189,7 @@ public class FeatQLearning {
 		}
 	}
 	
-	public void evalPolicy() {
+	public void evalPolicy() throws IOException {
 		int total = 0;
 		int[] scores = new int[50];
 		for(int i = 0; i<scores.length; i++) {
@@ -207,22 +212,18 @@ public class FeatQLearning {
 				scores[i]--;
 				state = takeAction(state[0], state[1], action);
 			}
-//			System.out.println();
 			total += scores[i];
 		}
 //		System.out.println("Eval: "+Arrays.toString(scores));
 		System.out.println("avg: "+(total/scores.length));
+		log.write((total/scores.length)+", ");
 	}
 	
 	public int featBestAction(int [] state) {
-//		System.out.println("\t\t\tState "+state[0]+" "+state[1]);
-//		int []
 		double max = featActionValue(state[0], state[1], UP);
-//		System.out.println("\tval: "+min+ " action up");
 		int index = UP;
 		for(int action = 1; action<4; action++) {
 			double temp = featActionValue(state[0], state[1], action);
-//			System.out.println("\tval: "+temp+ " action "+action);
 			if(temp > max){
 				index = action;
 				max = temp;
@@ -235,7 +236,6 @@ public class FeatQLearning {
 		double f1 = f1goal(getPrimeState(x, y, action));
 		int [] s = {x,y};
 		double f2 = f2mines( s, action);
-//		System.out.println("\t\t\t\tAction"+action+"f1: "+f1 + " "+f2);
 		return  (w1 * f1)  + (w2 * f2);
 	}
 	
@@ -258,10 +258,10 @@ public class FeatQLearning {
 	
 	private char maxActionToChar(int i) {
 		switch(i) {
-		case 0 : return '^';
-		case 1 : return 'v';
-		case 2 : return '<';
-		case 3 : return '>';
+		case 0 : return 'U';
+		case 1 : return 'D';
+		case 2 : return 'L';
+		case 3 : return 'R';
 		default : return 'U';
 		}
 	}
