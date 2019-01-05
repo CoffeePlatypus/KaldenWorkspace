@@ -1,0 +1,18 @@
+This folder contains:
+
+[1] hw02.pdf: a description of the assignment and its requirements.
+
+[2] inputData: a folder containing some sample files, in the format described in the assignment document.  Each file (and file name) begins with a number indicating the dimensionality of the data in that file.  The files that include "test" in can be used to test a tree;  however, they are in exactly the same format as the other ones, so you can build trees using any of these data files, and test with any of them, too, so long as both files have data with the same dimensionality.
+
+[3] testRuns: a folder containing some sample test-runs to compare against your own output results.  Of these:
+
+    [a] The ones named testRun_2d_small-x.txt show the results of printing out leaf-data and paths.  
+        (Your program should be able to do this for any and all data, but the results may be very 
+        long if the data-set is large.)  These runs only differ on the value of S, the bound on the
+        size of the subsets stored by the leaves of the tree.
+        
+    [b] The rest all show the results of building a tree with other, larger data-sets.  In these cases,
+        the user chooses not to print out all of the leaves, and only does some testing for nearest
+        neighbors.  
+        
+Not every input data-set has an associated test-run.  You can use those to further test your code, and you can make your own test-sets (either by hand, or using code) to make sure you can handle a wide range of data-set dimensionality and size.
